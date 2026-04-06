@@ -1,115 +1,96 @@
-import Image from "next/image";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { motion } from "framer-motion";
+import { ArrowRight, Download, Github, Twitter, Instagram } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="relative w-full h-full min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-6 overflow-hidden">
+      {/* Background blobs for "Premium" look */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] -z-10 animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px] -z-10 animate-pulse delay-700" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <div className="max-w-5xl w-full flex flex-col md:flex-row items-center gap-16">
+        {/* Left Side: Text */}
+        <div className="flex-1 text-center md:text-left">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <h2 className="text-accent font-anta tracking-[0.2em] mb-4 text-sm md:text-base uppercase">
+              Digital Experience Architect
+            </h2>
+            <h1 className="text-6xl md:text-9xl font-squids leading-none mb-6">
+              HELLO. <br />
+              I AM <span className="premium-text">DREDD</span>
+            </h1>
+            <p className="font-anta text-foreground/70 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+              Crafting premium full-stack experiences with high precision.
+              From sleek web interfaces to robust mobile applications,
+              I build digital ecosystems that push the boundaries of design.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
+              <Link
+                href="/about"
+                className="group relative flex items-center justify-center gap-3 bg-foreground text-background px-8 py-4 rounded-2xl font-squids overflow-hidden transition-transform hover:scale-105"
+              >
+                <div className="absolute inset-0 bg-accent translate-y-[101%] transition-transform group-hover:translate-y-0" />
+                <span className="relative z-10">LEARN MORE</span>
+                <ArrowRight className="relative z-10 w-5 h-5 transition-transform group-hover:translate-x-2" />
+              </Link>
+              <button className="flex items-center justify-center gap-3 glass px-8 py-4 rounded-2xl font-squids transition-transform hover:scale-105">
+                <Download className="w-5 h-5 text-accent" />
+                <span>RESUME</span>
+              </button>
+            </div>
+
+            {/* Social Links */}
+            <div className="mt-12 flex items-center justify-center md:justify-start gap-6 text-foreground/40">
+              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><Github size={24} /></Link>
+              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><Twitter size={24} /></Link>
+              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><Instagram size={24} /></Link>
+            </div>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Right Side: Visual Content */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          className="relative flex-1 group"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <div className="absolute inset-0 bg-accent/20 rounded-full blur-[60px] group-hover:bg-accent/40 transition-all duration-700" />
+          <div className="relative w-72 h-72 md:w-[450px] md:h-[450px] glass rounded-3xl overflow-hidden shadow-2xl p-4">
+            <div className="w-full h-full rounded-2xl overflow-hidden bg-surface-dark relative">
+               <img
+                src="/img/dredd.png"
+                alt="Dredd"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent h-1/2 bottom-0" />
+            </div>
+          </div>
+          {/* Floating elements for "Wow" factor */}
+          <motion.div
+            animate={{ y: [0, -20, 0] }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            className="absolute -top-10 -right-10 glass p-6 rounded-3xl shadow-xl hidden lg:block"
+          >
+             <div className="text-accent font-squids text-4xl">8+</div>
+             <div className="text-xs font-anta uppercase opacity-50">Years of Code</div>
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, 20, 0] }}
+            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
+            className="absolute -bottom-10 -left-10 glass p-6 rounded-3xl shadow-xl hidden lg:block"
+          >
+             <div className="text-secondary-light font-squids text-2xl">Verified</div>
+             <div className="text-xs font-anta uppercase opacity-50">Developer</div>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
