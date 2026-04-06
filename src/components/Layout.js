@@ -1,10 +1,10 @@
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import Navbar from "./Navbar";
-import HUD from "@/ui/HUD";
-import Subtitles from "@/ui/Subtitles";
+import { motion } from "framer-motion; 
+import dynamic from "next/dynamic; 
+import Navbar from "./Navbar; 
+import HUD from "@/ui/HUD; 
+import Subtitles from "@/ui/Subtitles; 
 
-const QuantumScene = dynamic(() => import("@/scene/QuantumScene"), { ssr: false });
+const QuantumScene = dynamic(() => import("@/scene/QuantumScene"), { ssr: false }); 
 
 export default function Layout({ children }) {
   return (
@@ -23,5 +23,5 @@ export default function Layout({ children }) {
       </motion.main>
       <div className="fixed inset-0 pointer-events-none z-20 bg-gradient-to-t from-black/40 via-transparent to-black/40" />
     </div>
-  );
+  ); 
 }

@@ -1,43 +1,43 @@
-import { useRef, useState, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Text, MeshDistortMaterial, Float, Sparkles } from "@react-three/drei";
-import useStore from "../../store/useStore";
-import Node from "./Node";
+import { useRef, useState, useMemo } from "react"; 
+import { useFrame } from "@react-three/fiber"; 
+import { Text, MeshDistortMaterial, Float, Sparkles } from "@react-three/drei"; 
+import useStore from "@/store/useStore"; 
+import Node from "./Node"; 
 import * as THREE from "three";
 
 export default function Cluster({ id, position, text, childrenData = [] }) {
-  const meshRef = useRef();
-  const { focusedCluster, setFocusedCluster, unlockedClusters, theme } = useStore();
-  const [hovered, setHovered] = useState(false);
+  const meshRef = useRef(); 
+  const { focusedCluster, setFocusedCluster, unlockedClusters, theme } = useStore(); 
+  const [hovered, setHovered] = useState(false); 
 
-  const isFocused = focusedCluster === id;
-  const isUnlocked = unlockedClusters.includes(id);
-  const activeColor = theme === "dark" ? "#009b4d" : "#3b82f6";
+  const isFocused = focusedCluster === id; 
+  const isUnlocked = unlockedClusters.includes(id); 
+  const activeColor = theme === "dark" ? "#009b4d" : "#3b82f6; 
 
   useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    if (!meshRef.current) return;
+    const time = state.clock.getElapsedTime(); 
+    if (!meshRef.current) return; 
 
     // Pulse effect
-    const s = hovered && isUnlocked ? 1.2 : 1.0;
-    meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
+    const s = hovered && isUnlocked ? 1.2 : 1.0; 
+    meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1); 
     
     // Rotation logic
-    meshRef.current.rotation.y = time * 0.3;
-    meshRef.current.rotation.z = Math.sin(time * 0.5) * 0.1;
+    meshRef.current.rotation.y = time * 0.3; 
+    meshRef.current.rotation.z = Math.sin(time * 0.5) * 0.1; 
 
     // Emissive intensity pulsing
     if (meshRef.current.material) {
-       meshRef.current.material.emissiveIntensity = isUnlocked ? (2 + Math.sin(time * 2) * 0.5) : 0.2;
+       meshRef.current.material.emissiveIntensity = isUnlocked ? (2 + Math.sin(time * 2) * 0.5) : 0.2; 
     }
-  });
+  }); 
 
   const handleClick = (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); 
     if (isUnlocked) {
-       setFocusedCluster(id);
+       setFocusedCluster(id); 
     }
-  };
+  }; 
 
   return (
     <group position={position}>
@@ -85,5 +85,5 @@ export default function Cluster({ id, position, text, childrenData = [] }) {
          />
       ))}
     </group>
-  );
+  ); 
 }

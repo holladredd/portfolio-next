@@ -29,4 +29,4 @@ export const portfolioData = {
     frameworks: ["React", "Express", "FastAPI", "Three.js"],
     tools: ["Vercel", "Docker", "AWS", "Kubernetes"]
   }
-};
+}; 

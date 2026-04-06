@@ -1,9 +1,8 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import useStore from "../../store/useStore";
-// Importing the shader material we previously established
-import EnergyFlowMaterial from "../Three/Shaders/EnergyFlowShader";
+import useStore from "@/store/useStore";
+import EnergyFlowMaterial from "@/scene/Shaders/EnergyFlowShader";
 
 const connections = [
   { from: [0, 0, 0], to: [-8, 4, -10], label: "about" },
@@ -20,11 +19,10 @@ export default function EnergyLinks() {
        const start = new THREE.Vector3(...conn.from);
        const end = new THREE.Vector3(...conn.to);
        const mid = new THREE.Vector3().lerpVectors(start, end, 0.5);
-       mid.y += 2; // Offset for arc
+       mid.y += 2;
        const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
        const points = curve.getPoints(50);
-       const geometry = new THREE.BufferGeometry().setFromPoints(points);
-       return { geometry, id: conn.label };
+       return { points, id: conn.label };
     });
   }, []);
 
@@ -33,10 +31,9 @@ export default function EnergyLinks() {
       {lines.map((line, i) => {
         const isUnlocked = unlockedClusters.includes(line.id);
         if (!isUnlocked) return null;
-
         return (
           <mesh key={i}>
-            <tubeGeometry args={[new THREE.CatmullRomCurve3(line.geometry.vertices), 20, 0.05, 8, false]} />
+            <tubeGeometry args={[new THREE.CatmullRomCurve3(line.points), 20, 0.05, 8, false]} />
             <energyFlowMaterial 
               uColor={new THREE.Color(activeColor)} 
               uDistortion={0.2}
@@ -47,13 +44,4 @@ export default function EnergyLinks() {
       })}
     </group>
   );
-}
-
-// Helper to use useMemo in component
-function useMemo(factory, deps) {
-  const ref = useRef();
-  if (!ref.current || !deps.every((dep, i) => dep === ref.current.deps[i])) {
-    ref.current = { value: factory(), deps };
-  }
-  return ref.current.value;
 }

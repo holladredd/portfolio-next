@@ -1,7 +1,7 @@
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import useStore from "../../store/useStore";
+import useStore from "@/store/useStore";
 
 export default function ParticleField({ count = 5000 }) {
   const meshRef = useRef();
@@ -25,14 +25,10 @@ export default function ParticleField({ count = 5000 }) {
     const time = state.clock.getElapsedTime();
     particles.forEach((p, i) => {
        const { x, y, z, s, t } = p;
-       
-       // Environment Pulse (Breathing)
        const pulse = Math.sin(time * 0.5 + z * 0.1) * 0.1;
        const slowMotion = mode === "intro" ? 0.2 : 1;
-       
        const xOff = Math.sin(t + time * slowMotion) * 0.5;
        const yOff = Math.cos(t + time * slowMotion) * 0.5;
-
        dummy.position.set(x + xOff, y + yOff, z);
        dummy.scale.set(s + pulse, s + pulse, s + pulse);
        dummy.updateMatrix();

@@ -1,10 +1,10 @@
-import { motion } from "framer-motion";
-import { Download, ExternalLink, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion; 
+import { Download, ExternalLink, ChevronRight } from "lucide-react; 
 
 export default function About() {
   const skills = [
     "Next.js", "React Native", "Node.js", "MongoDB", "Express", "Tailwind CSS", "Framer Motion", "UI/UX Design"
-  ];
+  ]; 
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 md:py-24">
@@ -48,9 +48,9 @@ export default function About() {
             </h3>
             
             <p className="text-lg font-anta leading-relaxed text-foreground/70 mb-8 text-justify">
-              Hi, I&apos;m Dredd — a Full-Stack Web & Mobile App Engineer with a passion for building clean, 
+              Hi, I&apos; m Dredd — a Full-Stack Web & Mobile App Engineer with a passion for building clean, 
               scalable digital experiences. I specialize in the MERN stack and React Native, 
-              fusing industrial-grade engineering with modern aesthetics. I don&apos;t just write code; 
+              fusing industrial-grade engineering with modern aesthetics. I don&apos; t just write code;  
               I design digital ecosystems.
             </p>
 
@@ -76,5 +76,5 @@ export default function About() {
         </div>
       </div>
     </div>
-  );
+  ); 
 }

@@ -1,12 +1,12 @@
-import { motion } from "framer-motion";
-import { ExternalLink, Code } from "lucide-react";
-import { FaGithub } from "react-icons/fa6";
+import { motion } from "framer-motion; 
+import { ExternalLink, Code } from "lucide-react; 
+import { FaGithub } from "react-icons/fa6; 
 
 const projects = [
   { id: 1, title: "Fintech App", category: "Mobile App", image: "/img/dredd2.jpg", repo: "#", demo: "#" },
   { id: 2, title: "E-commerce System", category: "Web Application", image: "/img/dredd.png", repo: "#", demo: "#" },
   { id: 3, title: "SaaS Dashboard", category: "UI/UX Design", image: "/img/hd.png", repo: "#", demo: "#" },
-];
+]; 
 
 export default function Project() {
   return (
@@ -65,5 +65,5 @@ export default function Project() {
         </div>
       </motion.div>
     </div>
-  );
+  ); 
 }

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text, MeshDistortMaterial } from "@react-three/drei";
-import useStore from "../../store/useStore";
+import useStore from "@/store/useStore";
 import * as THREE from "three";
 
 export default function Node({ id, position, text }) {
@@ -15,8 +15,6 @@ export default function Node({ id, position, text }) {
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
-
-    // Subtle magnetic pull or hover expansion
     const s = hovered ? 1.2 : 1.0;
     meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
     meshRef.current.rotation.y = time * 0.5;

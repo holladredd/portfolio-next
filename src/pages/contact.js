@@ -1,13 +1,13 @@
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
-import { FaFacebook, FaInstagram, FaGithub, FaXTwitter } from "react-icons/fa6";
+import { motion } from "framer-motion; 
+import { Mail, Phone, MapPin, Send } from "lucide-react; 
+import { FaFacebook, FaInstagram, FaGithub, FaXTwitter } from "react-icons/fa6; 
 
 const links = [
   { id: 1, name: "Facebook", link: "https://web.facebook.com/folayan.olamide.1", icon: <FaFacebook size={24} />, color: "#1877F2" },
   { id: 2, name: "Instagram", link: "https://www.instagram.com/dev_dredd?igsh=NXozcGk5eTFoajZo", icon: <FaInstagram size={24} />, color: "#E4405F" },
   { id: 3, name: "GitHub", link: "https://github.com/holladredd", icon: <FaGithub size={24} />, color: "#181717" },
   { id: 4, name: "Twitter", link: "https://x.com/Holla_Dredd?s=09", icon: <FaXTwitter size={24} />, color: "#1DA1F2" },
-];
+]; 
 
 export default function Contact() {
   return (
@@ -22,9 +22,9 @@ export default function Contact() {
         <div className="space-y-12">
           <div>
             <h2 className="text-accent font-anta tracking-widest text-sm uppercase mb-4">Availability</h2>
-            <h1 className="text-5xl md:text-7xl font-squids mb-6 uppercase">Let&apos;s Connect</h1>
+            <h1 className="text-5xl md:text-7xl font-squids mb-6 uppercase">Let&apos; s Connect</h1>
             <p className="text-lg font-anta leading-relaxed text-foreground/70 max-w-lg">
-              I&apos;m always open to discussing new projects, creative ideas or 
+              I&apos; m always open to discussing new projects, creative ideas or 
               opportunities to be part of your vision. Reach out through any 
               of the channels below.
             </p>
@@ -93,5 +93,5 @@ export default function Contact() {
         </div>
       </motion.div>
     </div>
-  );
+  ); 
 }
