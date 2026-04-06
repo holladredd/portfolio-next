@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, PointLight, Sparkles } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
 import { createNoise3D } from "simplex-noise";
 import { useExperience } from "@/context/ExperienceContext";
 import * as THREE from "three";
@@ -72,7 +72,7 @@ export default function DreddAI() {
           opacity={0.9}
           transparent
         />
-        <PointLight 
+        <pointLight 
           ref={lightRef}
           distance={15} 
           color={activeColor} 

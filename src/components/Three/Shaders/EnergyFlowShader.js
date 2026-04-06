@@ -6,13 +6,24 @@ const EnergyFlowMaterial = shaderMaterial(
   {
     uTime: 0,
     uColor: new THREE.Color("#009b4d"), // Dredd's Green
+    uDistortion: 0.1,
   },
   // Vertex Shader
   `
   varying vec2 vUv;
+  uniform float uTime;
+  uniform float uDistortion;
+
   void main() {
     vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec3 pos = position;
+    
+    // Sine-based flow distortion
+    float flow = sin(pos.x * 2.0 - uTime * 3.0) * uDistortion;
+    pos.y += flow;
+    pos.z += cos(pos.x * 2.0 - uTime * 3.0) * uDistortion;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
   }
   `,
   // Fragment Shader
@@ -22,11 +33,14 @@ const EnergyFlowMaterial = shaderMaterial(
   varying vec2 vUv;
 
   void main() {
-    // Moving Sin pulse for flow
-    float flow = sin(vUv.x * 20.0 - uTime * 5.0) * 0.5 + 0.5;
-    float alpha = flow * smoothstep(0.1, 0.5, vUv.y) * smoothstep(0.9, 0.5, vUv.y);
+    // Pulse flow speed
+    float flowX = fract(vUv.x * 5.0 - uTime * 2.0);
+    float glow = smoothstep(0.4, 0.5, flowX) * smoothstep(0.6, 0.5, flowX);
     
-    gl_FragColor = vec4(uColor, alpha * 0.3);
+    // Fade at edges of the trail
+    float alpha = glow * smoothstep(0.1, 0.4, vUv.x) * smoothstep(0.9, 0.6, vUv.x);
+    
+    gl_FragColor = vec4(uColor, alpha * 0.5);
   }
   `
 );
