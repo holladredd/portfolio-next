@@ -15,8 +15,7 @@ export default function ParticleField({ count = 5000 }) {
        const y = (Math.random() - 0.5) * 100;
        const z = (Math.random() - 0.5) * 50;
        const s = Math.random() * 0.1;
-       const t = Math.random() * 100;
-       temp.push({ x, y, z, s, t });
+       temp.push({ x, y, z, s });
     }
     return temp;
   }, [count]);
@@ -26,16 +25,16 @@ export default function ParticleField({ count = 5000 }) {
     const { mouse } = state;
     
     particles.forEach((p, i) => {
-       const { x, y, z, s, t } = p;
+       const { x, y, z, s } = p;
        
-       // Calculate cursor repulsion
+       // Calculate cursor repulsion (The Ripple Effect)
        const mousePos = new THREE.Vector3(mouse.x * 30, mouse.y * 20, 0);
        const dist = new THREE.Vector3(x, y, 0).distanceTo(mousePos);
        const force = Math.max(0, 4 - dist) * 0.1;
 
-       const slowMotion = mode === "intro" ? 0.2 : 1;
-       const xOff = Math.sin(t + time * slowMotion) * 0.5 + (x - mousePos.x) * force;
-       const yOff = Math.cos(t + time * slowMotion) * 0.5 + (y - mousePos.y) * force;
+       // Static background: no automatic movement
+       const xOff = (x - mousePos.x) * force;
+       const yOff = (y - mousePos.y) * force;
        
        dummy.position.set(x + xOff, y + yOff, z);
        dummy.scale.set(s, s, s);
@@ -51,7 +50,7 @@ export default function ParticleField({ count = 5000 }) {
       <meshBasicMaterial 
         color="#ffffff" 
         transparent 
-        opacity={0.3} 
+        opacity={0.2} 
         blending={THREE.AdditiveBlending} 
       />
     </instancedMesh>

@@ -15,7 +15,7 @@ export default function CameraController() {
   const { focusedCluster, mode } = useStore();
   
   // Start from a "Long Shot" cinematic position
-  const targetPos = useRef(new THREE.Vector3(0, 50, 60));
+  const targetPos = useRef(new THREE.Vector3(0, 0, 80));
   const lookAtPos = useRef(new THREE.Vector3(0, 0, 0));
 
   useEffect(() => {
@@ -36,12 +36,10 @@ export default function CameraController() {
     // Smooth interpolation for cinematic movement
     camera.position.lerp(targetPos.current, 0.03);
     
-    const lookAtTarget = new THREE.Vector3();
-    lookAtTarget.lerpVectors(camera.position, lookAtPos.current, 0.1);
     camera.lookAt(lookAtPos.current);
     
     // Subtle breathing effect
-    camera.position.y += Math.sin(state.clock.getElapsedTime()) * 0.002;
+    camera.position.y += Math.sin(state.clock.getElapsedTime()) * 0.005;
   });
 
   return null;
