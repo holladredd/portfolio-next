@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Float, Text, MeshDistortMaterial, Sparkles } from "@react-three/drei";
+import { Float, Text, MeshDistortMaterial, Sparkles, Ring } from "@react-three/drei";
 import { useRouter } from "next/router";
 import { useExperience } from "@/context/ExperienceContext";
 import * as THREE from "three";
@@ -14,11 +14,12 @@ const nodesData = [
 
 function Node({ data }) {
   const meshRef = useRef();
-  const textRef = useRef();
+  const auraRef = useRef();
   const router = useRouter();
   const { mouse } = useThree();
-  const { unlockedNodes, visitedNodes } = useExperience();
+  const { unlockedNodes, visitedNodes, discoveryPoints } = useExperience();
   const [hovered, setHovered] = useState(false);
+  const [pulse, setPulse] = useState(0);
   
   const isUnlocked = unlockedNodes.includes(data.id);
   const isVisited = visitedNodes.includes(data.id.replace("/", ""));
@@ -27,21 +28,25 @@ function Node({ data }) {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
 
-    // Magnetic Pull toward mouse (Only if unlocked)
-    const factor = isUnlocked ? 0.05 : 0.01;
-    const targetX = data.position[0] + (hovered ? mouse.x * 3 : mouse.x * 1);
-    const targetY = data.position[1] + (hovered ? mouse.y * 3 : mouse.y * 1);
+    // Pulse based on hover
+    setPulse(THREE.MathUtils.lerp(pulse, hovered ? 1 : 0, 0.1));
+
+    // Magnetic Pull toward mouse
+    const factor = isUnlocked ? 0.08 : 0.01;
+    const targetX = data.position[0] + (hovered ? mouse.x * 4 : mouse.x * 1);
+    const targetY = data.position[1] + (hovered ? mouse.y * 4 : mouse.y * 1);
 
     meshRef.current.position.x = THREE.MathUtils.lerp(meshRef.current.position.x, targetX, factor);
     meshRef.current.position.y = THREE.MathUtils.lerp(meshRef.current.position.y, targetY, factor);
     
-    // Orbital Motion 
-    meshRef.current.rotation.y = time * 0.3;
-    meshRef.current.rotation.z = Math.sin(time * 0.5) * 0.1;
-    
-    // Focus Scaling
-    const s = hovered && isUnlocked ? 1.2 : 1.0;
+    // Discovery Scale Effect
+    const s = (hovered && isUnlocked ? 1.3 : 1.0) + (isVisited ? 0.1 : 0);
     meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
+
+    if (auraRef.current) {
+       auraRef.current.rotation.z += 0.02;
+       auraRef.current.scale.setScalar(1.5 + Math.sin(time * 3) * 0.1 + pulse * 0.4);
+    }
   });
 
   const handleNavigate = () => {
@@ -52,6 +57,17 @@ function Node({ data }) {
 
   return (
     <group>
+      {/* Focus Aura Ring */}
+      {hovered && isUnlocked && (
+        <Ring 
+          ref={auraRef} 
+          args={[1.8, 2, 64]} 
+          position={data.position}
+        >
+          <meshBasicMaterial color="#009b4d" transparent opacity={0.4} />
+        </Ring>
+      )}
+
       <mesh
         ref={meshRef}
         position={data.position}
@@ -61,30 +77,29 @@ function Node({ data }) {
       >
         <torusKnotGeometry args={[1, 0.3, 128, 16]} />
         <MeshDistortMaterial
-          color={!isUnlocked ? "#1f2937" : (hovered ? "#009b4d" : "#3b82f6")}
-          speed={isUnlocked ? 4 : 1}
-          distort={isUnlocked ? 0.3 : 0.05}
+          color={!isUnlocked ? "#111827" : (hovered ? "#009b4d" : (isVisited ? "#3b82f6" : "#60a5fa"))}
+          speed={isUnlocked ? 4 : 0.5}
+          distort={isUnlocked ? 0.4 : 0.05}
           radius={1}
-          emissive={!isUnlocked ? "#000000" : (hovered ? "#009b4d" : "#1e40af")}
-          emissiveIntensity={isUnlocked ? 2 : 0}
+          emissive={!isUnlocked ? "#000000" : (hovered ? "#052e16" : (isVisited ? "#1e3a8a" : "#1e40af"))}
+          emissiveIntensity={isUnlocked ? 3 : 0}
           transparent
-          opacity={isUnlocked ? 0.9 : 0.3}
+          opacity={isUnlocked ? 0.95 : 0.2}
         />
         
-        {/* Particle Burst on Unlock / Presence */}
-        {isUnlocked && <Sparkles count={20} scale={2} size={2} speed={0.4} color={hovered ? "#009b4d" : "#3b82f6"} />}
+        {/* Discovery Burst (Persistent Sparkle) */}
+        {isUnlocked && <Sparkles count={isVisited ? 40 : 20} scale={2.5} size={2} speed={0.6} color={hovered ? "#009b4d" : "#3b82f6"} />}
 
         <Text
-          ref={textRef}
-          position={[0, 2.5, 0]}
-          fontSize={0.6}
-          color={!isUnlocked ? "#4b5563" : (hovered ? "#009b4d" : "white")}
+          position={[0, 3, 0]}
+          fontSize={0.5}
+          color={!isUnlocked ? "#374151" : "white"}
           font="/fonts/Anta-Regular.ttf"
           anchorX="center"
           anchorY="middle"
-          fillOpacity={isUnlocked ? 1 : 0.5}
+          fillOpacity={isUnlocked ? (hovered ? 1 : 0.7) : 0.3}
         >
-          {data.text} {!isUnlocked && " (LOCKED)"}
+          {data.text} {!isUnlocked && " [ENTANGLED]"}
         </Text>
       </mesh>
     </group>
