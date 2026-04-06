@@ -1,6 +1,6 @@
 import { Canvas, extend } from "@react-three/fiber";
 import { Suspense, useMemo } from "react";
-import { Stars, OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { EffectComposer, Bloom, Noise, ChromaticAberration } from "@react-three/postprocessing";
 import useStore from "@/store/useStore";
 
@@ -11,6 +11,7 @@ import Cluster from "@/clusters/Cluster";
 import EnergyLinks from "@/clusters/EnergyLinks";
 import Dredd from "@/dredd/Dredd";
 import DreddAI from "@/dredd/DreddAI";
+import NebulaBackground from "./NebulaBackground";
 
 // Shader Imports
 import EnergyFlowMaterial from "@/scene/Shaders/EnergyFlowShader";
@@ -20,9 +21,9 @@ import QuantumDistortionMaterial from "@/scene/Shaders/DistortionShader";
 extend({ EnergyFlowMaterial, PortalShaderMaterial, QuantumDistortionMaterial });
 
 const clusters = [
-  { id: "about", position: [-8, 4, -10], text: "ABOUT" },
-  { id: "projects", position: [8, -4, -10], text: "PROJECTS" },
-  { id: "skills", position: [-4, -8, -10], text: "SKILLS" }
+  { id: "about", position: [-15, 8, -20], text: "ABOUT" },
+  { id: "projects", position: [15, -8, -20], text: "PROJECTS" },
+  { id: "skills", position: [-8, -15, -20], text: "SKILLS" }
 ];
 
 export default function QuantumScene() {
@@ -43,12 +44,13 @@ export default function QuantumScene() {
         <Suspense fallback={null}>
           <color attach="background" args={[spaceColor]} />
           
-          <ambientLight intensity={0.4} />
-          <pointLight position={[20, 20, 20]} intensity={2} color="#3b82f6" />
-          <pointLight position={[-20, -20, -20]} intensity={2} color="#009b4d" />
+          <ambientLight intensity={0.5} />
+          <pointLight position={[20, 20, 20]} intensity={2.5} color="#3b82f6" />
+          <pointLight position={[-20, -20, -20]} intensity={2.5} color="#009b4d" />
           
-          <Stars radius={100} depth={50} count={5000} factor={6} saturation={0} fade speed={1.5} />
+          <NebulaBackground />
 
+          <PerspectiveCamera makeDefault position={[0, 0, 30]} fov={60} />
           <CameraController />
           <ParticleField count={4500} />
           <EnergyLinks />
@@ -63,23 +65,19 @@ export default function QuantumScene() {
           <DreddAI />
 
           <EffectComposer disableNormalPass>
-            <Bloom 
-              luminanceThreshold={0.2} 
-              mipmapBlur 
-              intensity={1.2} 
-              radius={0.4} 
-            />
+            <Bloom luminanceThreshold={0.2} mipmapBlur intensity={1.5} radius={0.4} />
             <Noise opacity={0.05} />
-            <ChromaticAberration 
-              offset={[0.001, 0.001]} 
-              opacity={mode === "intro" ? 0.3 : 0.05} 
-            />
+            <ChromaticAberration offset={[0.001, 0.001]} opacity={mode === "intro" ? 0.3 : 0.05} />
           </EffectComposer>
 
           <OrbitControls 
-            enableZoom={false} 
             enablePan={false} 
-            rotateSpeed={0.3} 
+            enableZoom={true} // TRAVEL VIA ZOOM
+            minDistance={4}
+            maxDistance={80}
+            rotateSpeed={0.4} 
+            enableDamping={true}
+            dampingFactor={0.05}
             makeDefault 
           />
         </Suspense>
