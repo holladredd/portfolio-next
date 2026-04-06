@@ -15,7 +15,7 @@ class VoiceSystem {
                  voices[0];
     this.isReady = true;
   }
-  speak(text) {
+  speak(text, onEnd) {
     if (!this.synth || !this.isReady) return;
     this.synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -23,6 +23,11 @@ class VoiceSystem {
     utterance.pitch = 0.8;
     utterance.rate = 1.0;
     utterance.volume = 1.0;
+    
+    if (onEnd) {
+      utterance.onend = () => onEnd();
+    }
+    
     this.synth.speak(utterance);
   }
 }

@@ -71,7 +71,7 @@ export default function Cluster({ id, position, text, childrenData = [] }) {
         </mesh>
       </Float>
       {isUnlocked && childrenData.map((node, i) => (
-         <Node key={node.id} id={node.id} position={node.offset} text={node.text} />
+         <Node key={node.id} id={node.id} position={node.offset} text={node.text} parentClusterId={id} />
       ))}
     </group>
   );

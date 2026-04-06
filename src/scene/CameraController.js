@@ -15,31 +15,34 @@ export default function CameraController() {
   const { focusedCluster, mode } = useStore();
   
   // Start from a "Long Shot" cinematic position
-  const targetPos = useRef(new THREE.Vector3(0, 0, 80));
+  const targetPos = useRef(new THREE.Vector3(0, 50, 100));
   const lookAtPos = useRef(new THREE.Vector3(0, 0, 0));
 
   useEffect(() => {
     if (mode === "intro") {
-      // Awakening intro: slowly move from far into the realm
-      targetPos.current.set(0, 0, 25);
+      targetPos.current.set(0, 0, 30);
     } else if (focusedCluster && clusterPositions[focusedCluster]) {
       const [x, y, z] = clusterPositions[focusedCluster];
-      targetPos.current.set(x, y, z + 8);
+      targetPos.current.set(x, y, z + 12);
       lookAtPos.current.set(x, y, z);
     } else {
-      targetPos.current.set(0, 0, 15);
+      targetPos.current.set(0, 0, 20);
       lookAtPos.current.set(0, 0, 0);
     }
   }, [focusedCluster, mode]);
 
   useFrame((state) => {
     // Smooth interpolation for cinematic movement
-    camera.position.lerp(targetPos.current, 0.03);
+    camera.position.lerp(targetPos.current, 0.02);
+    
+    // Smoothly update lookAt
+    const currentLookAt = new THREE.Vector3();
+    camera.getWorldDirection(currentLookAt);
     
     camera.lookAt(lookAtPos.current);
     
     // Subtle breathing effect
-    camera.position.y += Math.sin(state.clock.getElapsedTime()) * 0.005;
+    camera.position.y += Math.sin(state.clock.getElapsedTime() * 0.5) * 0.005;
   });
 
   return null;

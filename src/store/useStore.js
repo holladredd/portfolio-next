@@ -26,6 +26,7 @@ const useStore = create((set) => ({
     };
   }),
   setFocusedNode: (node) => set({ focusedNode: node }),
+  clearSubtitles: () => set({ showSubtitles: false, subtitleText: "" }),
   setSubtitles: (text, duration = 5000) => {
     set({ subtitleText: text, showSubtitles: true });
     if (duration > 0) {

@@ -48,7 +48,6 @@ const EclipseMaterial = shaderMaterial(
   `
 );
 
-THREE.ColorManagement.enabled = true;
 import { extend } from "@react-three/fiber";
 extend({ EclipseMaterial });
 
@@ -57,7 +56,6 @@ export default function Dredd() {
   const materialRef = useRef();
   const { camera } = useThree();
   const { theme, isInteracting, setIsInteracting, isSpeaking } = useStore();
-  const [hovered, setHovered] = useState(false);
   
   const targetPos = useRef(new THREE.Vector3());
 
@@ -66,42 +64,38 @@ export default function Dredd() {
     if (!meshRef.current) return;
     
     // Follow Camera Logic: AI Companion behavior
-    // Stay at a soft distance in front of the camera
     const cameraDir = new THREE.Vector3(0, 0, -1);
     cameraDir.applyQuaternion(camera.quaternion);
     targetPos.current.copy(camera.position).add(cameraDir.multiplyScalar(6));
-    meshRef.current.position.lerp(targetPos.current, 0.05);
+    meshRef.current.position.lerp(targetPos.current, 0.03);
 
     // Face the user
     meshRef.current.lookAt(camera.position);
 
     if (materialRef.current) {
       materialRef.current.uTime = time;
-      materialRef.current.uIntensity = isSpeaking ? (2.0 + Math.sin(time * 5) * 0.5) : (1.0 + Math.sin(time) * 0.2);
-      // Subtle surge lerp
-      materialRef.current.uSurge = THREE.MathUtils.lerp(materialRef.current.uSurge, isInteracting ? 1.0 : 0.0, 0.1);
+      materialRef.current.uIntensity = isSpeaking ? (2.5 + Math.sin(time * 6) * 0.8) : (1.0 + Math.sin(time) * 0.2);
+      materialRef.current.uSurge = THREE.MathUtils.lerp(materialRef.current.uSurge, isInteracting ? 2.0 : 0.0, 0.08);
     }
     
-    meshRef.current.scale.lerp(new THREE.Vector3(1, 1, 1).multiplyScalar(isInteracting ? 1.5 : 1), 0.1);
+    const s = 1.0 + (isInteracting ? 0.8 : (isSpeaking ? Math.sin(time * 6) * 0.1 : 0));
+    meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
   });
 
   return (
     <group>
-      {/* Dark Void Core */}
       <mesh ref={meshRef} 
-            onClick={(e) => { e.stopPropagation(); setIsInteracting(true); setTimeout(() => setIsInteracting(false), 2000); }}
-            onPointerOver={() => setHovered(true)} 
-            onPointerOut={() => setHovered(false)}>
+            onClick={(e) => { e.stopPropagation(); setIsInteracting(true); }}
+            className="cursor-pointer">
         <sphereGeometry args={[1.5, 64, 64]} />
         <meshBasicMaterial color="#000000" />
         
-        {/* Eclipse Rim Shader */}
         <mesh position={[0, 0, 0.1]}>
           <planeGeometry args={[4, 4]} />
           <eclipseMaterial ref={materialRef} transparent blending={THREE.AdditiveBlending} />
         </mesh>
         
-        <Sparkles count={isInteracting ? 200 : 50} scale={4} size={isInteracting ? 4 : 2} color="#ffffff" speed={isInteracting ? 2 : 0.5} />
+        <Sparkles count={isInteracting ? 300 : 80} scale={4} size={isInteracting ? 5 : 2} color="#ffffff" speed={isInteracting ? 2.5 : 0.5} />
       </mesh>
     </group>
   );
