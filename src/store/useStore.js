@@ -2,13 +2,16 @@ import { create } from "zustand";
 
 const useStore = create((set) => ({
   currentRoom: "lobby",
-  selectedExhibit: null,
-  hudData: null,
+  previousRoom: null,
+  setRoom: (room) => set((state) => ({ 
+    previousRoom: state.currentRoom,
+    currentRoom: room 
+  })),
+  
   isHUDVisible: false,
-
-  setRoom: (room) => set({ currentRoom: room, isHUDVisible: false, selectedExhibit: null }),
-  setExhibit: (exhibit) => set({ selectedExhibit: exhibit, hudData: exhibit, isHUDVisible: true }),
-  closeHUD: () => set({ isHUDVisible: false, selectedExhibit: null }),
+  hudData: null,
+  setExhibit: (data) => set({ isHUDVisible: true, hudData: data }),
+  closeHUD: () => set({ isHUDVisible: false, hudData: null }),
 }));
 
 export default useStore;

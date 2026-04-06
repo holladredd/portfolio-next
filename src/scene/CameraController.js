@@ -5,9 +5,11 @@ import useStore from "@/store/useStore";
 
 const roomCoordinates = {
   lobby: { pos: [0, 2, 10], lookAt: [0, 1, 0] },
-  projects: { pos: [-30, 2, -25], lookAt: [-30, 1, -30] },
-  skills: { pos: [30, 2, -25], lookAt: [30, 1, -30] },
-  about: { pos: [0, 2, -45], lookAt: [0, 1, -50] }
+  projects: { pos: [-40, 2, -30], lookAt: [-40, 1, -40] },
+  graphics: { pos: [-40, 2, -70], lookAt: [-40, 1, -80] },
+  skills: { pos: [40, 2, -30], lookAt: [40, 1, -40] },
+  about: { pos: [0, 2, -60], lookAt: [0, 1, -70] },
+  contact: { pos: [0, 2, 50], lookAt: [0, 1, 60] }
 };
 
 export default function CameraController() {
@@ -31,6 +33,7 @@ export default function CameraController() {
     currentLook.current.lerp(targetLook.current, 0.04);
     camera.lookAt(currentLook.current);
     
+    // Subtle float
     camera.position.y += Math.sin(state.clock.elapsedTime * 0.5) * 0.002;
   });
 
