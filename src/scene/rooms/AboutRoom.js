@@ -4,10 +4,16 @@ import EntranceDoor from "../components/EntranceDoor";
 import SolidRoom from "../components/SolidRoom";
 
 export default function AboutRoom({ position }) {
+  const { previousRoom } = useStore();
   return (
     <group position={position}>
       <SolidRoom title="SYSTEM: PROFILE" size={[20, 12, 20]} />
-      <EntranceDoor position={[0, 0, 9.8]} rotation={[0, Math.PI, 0]} label="RETURN TO LOBBY" onClick="lobby" />
+      <EntranceDoor 
+        position={[0, 0, 9.8]} 
+        rotation={[0, Math.PI, 0]} 
+        label={`RETURN TO ${previousRoom.toUpperCase()}`} 
+        onClick={previousRoom} 
+      />
       <mesh position={[0, 4, -9.8]}>
         <boxGeometry args={[14, 8, 0.2]} />
         <meshStandardMaterial color="#050505" roughness={0.1} metalness={0.9} />

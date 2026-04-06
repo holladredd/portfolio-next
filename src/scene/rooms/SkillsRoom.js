@@ -6,10 +6,16 @@ import SolidRoom from "../components/SolidRoom";
 import { skills } from "@/data/content";
 
 export default function SkillsRoom({ position }) {
+  const { previousRoom } = useStore();
   return (
     <group position={position}>
       <SolidRoom title="CORE: SKILLS" size={[30, 12, 30]} />
-      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label="RETURN TO LOBBY" onClick="lobby" />
+      <EntranceDoor 
+        position={[0, 0, 14.8]} 
+        rotation={[0, Math.PI, 0]} 
+        label={`RETURN TO ${previousRoom.toUpperCase()}`} 
+        onClick={previousRoom} 
+      />
       {skills.map((s, i) => {
         const angle = (i / skills.length) * Math.PI * 2; 
         const radius = 6;

@@ -13,8 +13,9 @@ export default function EntranceDoor({ position, rotation = [0, 0, 0], label, on
         onClick={(e) => { 
           e.stopPropagation(); 
           if (!isTransitioning) {
+            // Precise world position capture for cinematic entry
             const worldPos = new THREE.Vector3();
-            e.eventObject.getWorldPosition(worldPos);
+            e.object.getWorldPosition(worldPos);
             startTransition(onClick, worldPos.toArray()); 
           }
         }}
