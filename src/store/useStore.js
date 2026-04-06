@@ -4,17 +4,26 @@ import * as THREE from "three";
 const useStore = create((set) => ({
   currentRoom: "lobby",
   previousRoom: "lobby",
-  isTransitioning: false,
+  nextRoom: null,
+  transitionPhase: "IDLE", // IDLE | FACING | ENTERING | LANDING
   transitionTarget: new THREE.Vector3(0, 1, 0),
   
-  setRoom: (room, doorPos = null) => set((state) => ({ 
+  startTransition: (room, doorPos) => set((state) => ({ 
     previousRoom: state.currentRoom,
-    currentRoom: room,
-    isTransitioning: true,
-    transitionTarget: doorPos ? new THREE.Vector3(...doorPos) : new THREE.Vector3(0, 1, 0)
+    nextRoom: room,
+    transitionPhase: "FACING",
+    transitionTarget: new THREE.Vector3(...doorPos)
   })),
   
-  finishTransition: () => set({ isTransitioning: false }),
+  setEntering: () => set({ transitionPhase: "ENTERING" }),
+  
+  setLanding: () => set((state) => ({
+    currentRoom: state.nextRoom,
+    nextRoom: null,
+    transitionPhase: "LANDING"
+  })),
+  
+  finishTransition: () => set({ transitionPhase: "IDLE" }),
   
   isHUDVisible: false,
   hudData: null,

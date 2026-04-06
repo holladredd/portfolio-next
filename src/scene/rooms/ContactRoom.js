@@ -13,12 +13,10 @@ const connections = [
 ];
 
 export default function ContactRoom({ position }) {
-  const { setRoom } = useStore();
-
   return (
     <group position={position} rotation={[0, Math.PI, 0]}>
       <SolidRoom title="UPLINK: CONTACT" size={[20, 12, 20]} />
-      <EntranceDoor position={[0, 0, 9.8]} rotation={[0, Math.PI, 0]} label="RETURN TO LOBBY" onClick={(pos) => setRoom("lobby", pos)} />
+      <EntranceDoor position={[0, 0, 9.8]} rotation={[0, Math.PI, 0]} label="RETURN TO LOBBY" onClick="lobby" />
       <group position={[0, 2, 0]}>
         {connections.map((c, i) => (
            <Exhibit key={c.name} position={[(-4 + i * 2), 0, -5]} data={c} type="node" />

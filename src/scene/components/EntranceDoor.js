@@ -3,20 +3,19 @@ import useStore from "@/store/useStore";
 import * as THREE from "three";
 
 export default function EntranceDoor({ position, rotation = [0, 0, 0], label, onClick }) {
-  const { isTransitioning } = useStore();
+  const { transitionPhase, startTransition } = useStore();
+  const isTransitioning = transitionPhase !== "IDLE";
 
   return (
     <group position={position} rotation={rotation}>
-      {/* Archway Portal - Gateway Pulse */}
       <mesh 
         position={[0, 3, 0]} 
         onClick={(e) => { 
           e.stopPropagation(); 
           if (!isTransitioning) {
-            // Capture world position for cinematic facing
             const worldPos = new THREE.Vector3();
             e.eventObject.getWorldPosition(worldPos);
-            onClick([worldPos.x, worldPos.y, worldPos.z]); 
+            startTransition(onClick, worldPos.toArray()); 
           }
         }}
         onPointerOver={() => {
@@ -35,7 +34,6 @@ export default function EntranceDoor({ position, rotation = [0, 0, 0], label, on
          />
       </mesh>
       
-      {/* Solid Door Frame */}
       <mesh position={[0, 3, 0.1]}>
         <boxGeometry args={[4, 6, 0.1]} />
         <meshStandardMaterial color="#1e293b" metalness={0.9} roughness={0.1} />

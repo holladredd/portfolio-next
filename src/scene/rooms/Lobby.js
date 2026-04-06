@@ -4,8 +4,6 @@ import EntranceDoor from "../components/EntranceDoor";
 import SolidRoom from "../components/SolidRoom";
 
 export default function Lobby({ position }) {
-  const { setRoom } = useStore();
-
   return (
     <group position={position}>
       <SolidRoom title="MUSEUM CORE: LOBBY" size={[32, 14, 32]} />
@@ -31,10 +29,10 @@ export default function Lobby({ position }) {
             <meshPhysicalMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.8} wireframe />
          </mesh>
       </group>
-      <EntranceDoor position={[-15.8, 0, -5]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick={(pos) => setRoom("projects", pos)} />
-      <EntranceDoor position={[15.8, 0, -5]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick={(pos) => setRoom("skills", pos)} />
-      <EntranceDoor position={[0, 0, -15.8]} label="ABOUT" onClick={(pos) => setRoom("about", pos)} />
-      <EntranceDoor position={[0, 0, 15.8]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick={(pos) => setRoom("contact", pos)} />
+      <EntranceDoor position={[-15.8, 0, -5]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
+      <EntranceDoor position={[15.8, 0, -5]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
+      <EntranceDoor position={[0, 0, -15.8]} label="ABOUT" onClick="about" />
+      <EntranceDoor position={[0, 0, 15.8]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
     </group>
   );
 }

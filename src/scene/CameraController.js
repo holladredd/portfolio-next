@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import useStore from "@/store/useStore";
 
@@ -14,7 +14,7 @@ const roomCoordinates = {
 
 export default function CameraController() {
   const { camera } = useThree();
-  const { currentRoom, isTransitioning, transitionTarget, finishTransition } = useStore();
+  const { currentRoom, transitionPhase, transitionTarget, setEntering, setLanding, finishTransition } = useStore();
   
   const targetPos = useRef(new THREE.Vector3(...roomCoordinates.lobby.pos));
   const targetLook = useRef(new THREE.Vector3(...roomCoordinates.lobby.lookAt));
@@ -27,25 +27,43 @@ export default function CameraController() {
     }
   }, [currentRoom]);
 
-  useFrame((state, delta) => {
-    if (isTransitioning) {
-      // First person walkthrough: Lerp towards Door first
-      const lookAtTarget = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0));
-      currentLook.current.lerp(lookAtTarget, 0.1);
+  useFrame((state) => {
+    if (transitionPhase === "FACING") {
+      // Phase 1: Lock gaze on the portal
+      const lookAtDoor = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0));
+      currentLook.current.lerp(lookAtDoor, 0.1);
       camera.lookAt(currentLook.current);
       
-      camera.position.lerp(targetPos.current, 0.05);
+      // Pivot check (approximate alignment)
+      if (currentLook.current.distanceTo(lookAtDoor) < 0.1) {
+        setEntering();
+      }
+    } 
+    else if (transitionPhase === "ENTERING") {
+      // Phase 2: Walk through the portal
+      const walkDir = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0)).sub(camera.position).normalize();
+      camera.position.add(walkDir.multiplyScalar(0.4)); // Move physical speed
       
-      if (camera.position.distanceTo(targetPos.current) < 0.2) {
+      // Reach portal depth
+      if (camera.position.distanceTo(transitionTarget) < 2) {
+        setLanding();
+      }
+    }
+    else if (transitionPhase === "LANDING") {
+      // Phase 3: Establish in the new room (Face AWAY from door)
+      camera.position.lerp(targetPos.current, 0.1);
+      currentLook.current.lerp(targetLook.current, 0.1);
+      camera.lookAt(currentLook.current);
+
+      if (camera.position.distanceTo(targetPos.current) < 0.5) {
         finishTransition();
       }
-    } else {
-      // Smooth subtle float and target lerp
+    }
+    else {
+      // Phase: IDLE - Natural breathing
       camera.position.lerp(targetPos.current, 0.04);
       currentLook.current.lerp(targetLook.current, 0.04);
       camera.lookAt(currentLook.current);
-      
-      // Idle bobbing
       camera.position.y += Math.sin(state.clock.elapsedTime * 0.5) * 0.002;
     }
   });
