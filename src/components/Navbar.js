@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useStore from "@/store/useStore";
 import { Menu, X, Home, User, Briefcase, Mail } from "lucide-react";
 import ThemeToggle from "@/ui/ThemeToggle";
 
