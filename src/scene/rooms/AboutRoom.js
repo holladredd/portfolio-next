@@ -1,5 +1,6 @@
 import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
+import EntranceDoor from "../components/EntranceDoor";
 
 export default function AboutRoom({ position }) {
   const { setRoom } = useStore();
@@ -21,29 +22,10 @@ export default function AboutRoom({ position }) {
         {"> ARCHITECT: Folayan Olamide (Dredd)\n> ROLE: Software Engineer\n> MISSION: Building robust interfaces and scalable architectures that bridge the gap between design and intricate functionality.\n\n> STATUS: Seeking highly motivated teams to engineer next-generation platforms.\n\n> _"}
       </Text>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
         <planeGeometry args={[20, 20]} />
         <meshStandardMaterial color="#0a0a0a" roughness={0.2} metalness={0.8} />
       </mesh>
-    </group>
-  );
-}
-
-function EntranceDoor({ position, rotation = [0, 0, 0], label, onClick }) {
-  return (
-    <group position={position} rotation={rotation}>
-      <mesh 
-        onClick={(e) => { e.stopPropagation(); onClick(); }}
-        onPointerOver={() => document.body.style.cursor = "pointer"}
-        onPointerOut={() => document.body.style.cursor = "default"}
-        position={[0, 2, 0]}
-      >
-        <boxGeometry args={[3, 4, 0.2]} />
-        <meshStandardMaterial color="#111111" emissive="#ffffff" emissiveIntensity={0.05} roughness={0.4} metalness={0.8} />
-      </mesh>
-      <Text position={[0, 4.5, 0]} fontSize={0.3} color="white" anchorX="center" anchorY="bottom">
-        {label}
-      </Text>
     </group>
   );
 }

@@ -1,5 +1,6 @@
 import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
+import EntranceDoor from "../components/EntranceDoor";
 import Exhibit from "../components/Exhibit";
 import { projects } from "@/data/content";
 
@@ -15,7 +16,6 @@ export default function ProjectsRoom({ position }) {
       <EntranceDoor position={[0, 0, 2]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
       
       {projects.map((p, i) => {
-        // Arrange in a semi-circle
         const angle = (i / (projects.length - 1)) * Math.PI; 
         const radius = 10;
         const x = Math.cos(angle) * radius;
@@ -24,36 +24,17 @@ export default function ProjectsRoom({ position }) {
           <Exhibit 
             key={p.id} 
             position={[x, 1.5, z]} 
-            rotation={[0, -angle + Math.PI/2, 0]} 
+            rotation={[0, -angle + Math.PI / 2, 0]} 
             data={p} 
             type="panel" 
           />
         );
       })}
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
         <planeGeometry args={[35, 35]} />
         <meshStandardMaterial color="#0a0a0a" roughness={0.2} metalness={0.8} />
       </mesh>
-    </group>
-  );
-}
-
-function EntranceDoor({ position, rotation = [0, 0, 0], label, onClick }) {
-  return (
-    <group position={position} rotation={rotation}>
-      <mesh 
-        onClick={(e) => { e.stopPropagation(); onClick(); }}
-        onPointerOver={() => document.body.style.cursor = "pointer"}
-        onPointerOut={() => document.body.style.cursor = "default"}
-        position={[0, 2, 0]}
-      >
-        <boxGeometry args={[3, 4, 0.2]} />
-        <meshStandardMaterial color="#111111" emissive="#ffffff" emissiveIntensity={0.05} roughness={0.4} metalness={0.8} />
-      </mesh>
-      <Text position={[0, 4.5, 0]} fontSize={0.3} color="white" anchorX="center" anchorY="bottom">
-        {label}
-      </Text>
     </group>
   );
 }
