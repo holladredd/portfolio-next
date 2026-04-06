@@ -3,6 +3,7 @@ import { Suspense, useMemo } from "react";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { EffectComposer, Bloom, Noise, ChromaticAberration } from "@react-three/postprocessing";
 import useStore from "@/store/useStore";
+import { projects } from "@/data/content";
 
 // Modular Component Imports
 import ParticleField from "./ParticleField";
@@ -20,15 +21,34 @@ import QuantumDistortionMaterial from "@/scene/Shaders/DistortionShader";
 
 extend({ EnergyFlowMaterial, PortalShaderMaterial, QuantumDistortionMaterial });
 
-const clusters = [
-  { id: "about", position: [-15, 8, -20], text: "ABOUT" },
-  { id: "projects", position: [15, -8, -20], text: "PROJECTS" },
-  { id: "skills", position: [-8, -15, -20], text: "SKILLS" }
-];
-
 export default function QuantumScene() {
   const { theme, mode } = useStore();
   const spaceColor = theme === "dark" ? "#000000" : "#0f172a";
+
+  const clusters = useMemo(() => {
+    // Basic cluster positions
+    const base = [
+      { id: "about", position: [-15, 8, -20], text: "ABOUT", childrenData: [] },
+      { id: "skills", position: [-8, -15, -20], text: "SKILLS", childrenData: [] }
+    ];
+
+    // Project cluster with dynamic child nodes (sphere arrangement)
+    const projectCenter = [15, -8, -20];
+    const projectNodes = projects.map((p, i) => {
+      const angle = (i / projects.length) * Math.PI * 2;
+      const r = 5;
+      return {
+        id: p.id,
+        text: p.name,
+        offset: [Math.cos(angle) * r, Math.sin(angle) * r, (Math.random() - 0.5) * 4]
+      };
+    });
+
+    return [
+      ...base,
+      { id: "projects", position: projectCenter, text: "PROJECTS", childrenData: projectNodes }
+    ];
+  }, []);
 
   return (
     <div className="fixed inset-0 -z-10 bg-black">
@@ -72,9 +92,9 @@ export default function QuantumScene() {
 
           <OrbitControls 
             enablePan={false} 
-            enableZoom={true} // TRAVEL VIA ZOOM
+            enableZoom={true} 
             minDistance={4}
-            maxDistance={80}
+            maxDistance={100}
             rotateSpeed={0.4} 
             enableDamping={true}
             dampingFactor={0.05}

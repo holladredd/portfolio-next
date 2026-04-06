@@ -9,9 +9,14 @@ const useStore = create((set) => ({
   unlockedClusters: ["home", "about"],
   subtitleText: "",
   showSubtitles: false,
+  isSpeaking: false,
+  isInteracting: false,
 
   setMode: (mode) => set({ mode }),
   setTheme: (theme) => set({ theme }),
+  setIsSpeaking: (isSpeaking) => set({ isSpeaking }),
+  setIsInteracting: (isInteracting) => set({ isInteracting }),
+  
   setFocusedCluster: (id) => set((state) => {
     const nextVisited = state.visitedClusters.includes(id) 
       ? state.visitedClusters 
@@ -25,14 +30,17 @@ const useStore = create((set) => ({
       unlockedClusters: nextUnlocked
     };
   }),
+  
   setFocusedNode: (node) => set({ focusedNode: node }),
   clearSubtitles: () => set({ showSubtitles: false, subtitleText: "" }),
+  
   setSubtitles: (text, duration = 5000) => {
     set({ subtitleText: text, showSubtitles: true });
     if (duration > 0) {
       setTimeout(() => set({ showSubtitles: false }), duration);
     }
   },
+  
   resetFocus: () => set({ focusedCluster: null, focusedNode: null }),
 }));
 
