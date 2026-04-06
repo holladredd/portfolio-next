@@ -23,14 +23,22 @@ export default function ParticleField({ count = 5000 }) {
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
+    const { mouse } = state;
+    
     particles.forEach((p, i) => {
        const { x, y, z, s, t } = p;
-       const pulse = Math.sin(time * 0.5 + z * 0.1) * 0.1;
+       
+       // Calculate cursor repulsion
+       const mousePos = new THREE.Vector3(mouse.x * 30, mouse.y * 20, 0);
+       const dist = new THREE.Vector3(x, y, 0).distanceTo(mousePos);
+       const force = Math.max(0, 4 - dist) * 0.1;
+
        const slowMotion = mode === "intro" ? 0.2 : 1;
-       const xOff = Math.sin(t + time * slowMotion) * 0.5;
-       const yOff = Math.cos(t + time * slowMotion) * 0.5;
+       const xOff = Math.sin(t + time * slowMotion) * 0.5 + (x - mousePos.x) * force;
+       const yOff = Math.cos(t + time * slowMotion) * 0.5 + (y - mousePos.y) * force;
+       
        dummy.position.set(x + xOff, y + yOff, z);
-       dummy.scale.set(s + pulse, s + pulse, s + pulse);
+       dummy.scale.set(s, s, s);
        dummy.updateMatrix();
        meshRef.current.setMatrixAt(i, dummy.matrix);
     });

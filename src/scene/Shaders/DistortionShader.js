@@ -1,11 +1,14 @@
 import * as THREE from "three";
-const DistortionShader = {
-  uniforms: {
-    uTime: { value: 0 },
-    uColor: { value: new THREE.Color("#009b4d") },
-    uDistortion: { value: 0.2 }
+import { shaderMaterial } from "@react-three/drei";
+
+const DistortionShaderMaterial = shaderMaterial(
+  {
+    uTime: 0,
+    uColor: new THREE.Color("#009b4d"),
+    uDistortion: 0.2
   },
-  vertexShader: `
+  // vertex shader
+  `
     varying vec2 vUv;
     varying float vDistortion;
     uniform float uTime;
@@ -17,7 +20,8 @@ const DistortionShader = {
       gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
     }
   `,
-  fragmentShader: `
+  // fragment shader
+  `
     varying vec2 vUv;
     varying float vDistortion;
     uniform vec3 uColor;
@@ -25,5 +29,6 @@ const DistortionShader = {
       gl_FragColor = vec4(uColor + vDistortion * 0.2, 0.9);
     }
   `
-};
-export default DistortionShader;
+);
+
+export default DistortionShaderMaterial;

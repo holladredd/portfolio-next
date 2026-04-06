@@ -1,18 +1,22 @@
 import * as THREE from "three";
-const PortalShader = {
-  uniforms: {
-    uTime: { value: 0 },
-    uColor: { value: new THREE.Color("#009b4d") },
-    uIntensity: { value: 1.0 }
+import { shaderMaterial } from "@react-three/drei";
+
+const PortalShaderMaterial = shaderMaterial(
+  {
+    uTime: 0,
+    uColor: new THREE.Color("#009b4d"),
+    uIntensity: 1.0
   },
-  vertexShader: `
+  // vertex shader
+  `
     varying vec2 vUv;
     void main() {
       vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
-  fragmentShader: `
+  // fragment shader
+  `
     varying vec2 vUv;
     uniform float uTime;
     uniform vec3 uColor;
@@ -23,5 +27,6 @@ const PortalShader = {
       gl_FragColor = vec4(uColor, ring * (1.0 - dist * 2.0));
     }
   `
-};
-export default PortalShader;
+);
+
+export default PortalShaderMaterial;

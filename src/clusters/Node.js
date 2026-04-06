@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text, MeshDistortMaterial } from "@react-three/drei";
+import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import * as THREE from "three";
 
 export default function Node({ id, position, text }) {
   const meshRef = useRef();
+  const materialRef = useRef();
   const { focusedNode, setFocusedNode, theme } = useStore();
   const [hovered, setHovered] = useState(false);
 
@@ -15,9 +16,15 @@ export default function Node({ id, position, text }) {
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
+    
     const s = hovered ? 1.2 : 1.0;
     meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
     meshRef.current.rotation.y = time * 0.5;
+
+    if (materialRef.current) {
+      materialRef.current.uTime = time;
+      materialRef.current.uDistortion = hovered ? 0.4 : 0.1;
+    }
   });
 
   return (
@@ -32,13 +39,9 @@ export default function Node({ id, position, text }) {
         onPointerOut={() => setHovered(false)}
       >
         <sphereGeometry args={[0.5, 32, 32]} />
-        <MeshDistortMaterial
-          color={hovered ? activeColor : "#4b5563"}
-          speed={hovered ? 4 : 2}
-          distort={hovered ? 0.4 : 0.2}
-          radius={1}
-          emissive={hovered ? activeColor : "#000000"}
-          emissiveIntensity={hovered ? 2 : 0}
+        <quantumDistortionMaterial
+          ref={materialRef}
+          uColor={new THREE.Color(hovered ? activeColor : "#4b5563")}
           transparent
           opacity={0.8}
         />

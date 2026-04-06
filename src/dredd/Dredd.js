@@ -14,34 +14,37 @@ export default function Dredd() {
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
-    meshRef.current.position.y += Math.sin(time) * 0.005;
+    
+    // Subtle float and rotation
+    meshRef.current.position.y = 2 + Math.sin(time) * 0.1;
     meshRef.current.rotation.y = time * 0.5;
+
     if (lightRef.current) {
-       lightRef.current.intensity = 1.5 + Math.sin(time * 2) * 0.5 + (hovered ? 2 : 0);
+       lightRef.current.intensity = 2.0 + Math.sin(time * 2) * 0.5 + (hovered ? 3 : 0);
     }
   });
 
   return (
-    <group position={[0, 0, 8]}>
+    <group position={[0, 0, 5]}>
       <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
         <mesh
           ref={meshRef}
           onPointerOver={() => setHovered(true)}
           onPointerOut={() => setHovered(false)}
         >
-          <sphereGeometry args={[1.2, 64, 64]} />
+          <sphereGeometry args={[1, 64, 64]} />
           <MeshDistortMaterial
             color={activeColor}
             speed={hovered ? 4 : 2}
             distort={hovered ? 0.6 : 0.4}
             radius={1}
             emissive={activeColor}
-            emissiveIntensity={hovered ? 2 : 1}
+            emissiveIntensity={hovered ? 4 : 2}
             transparent
-            opacity={0.9}
+            opacity={1.0}
           />
-          <pointLight ref={lightRef} distance={15} color={activeColor} />
-          <Sparkles count={50} scale={3} size={2} color={activeColor} speed={1.5} />
+          <pointLight ref={lightRef} distance={20} color={activeColor} intensity={2} />
+          <Sparkles count={80} scale={4} size={3} color={activeColor} speed={1.5} />
         </mesh>
       </Float>
     </group>

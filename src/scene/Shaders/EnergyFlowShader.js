@@ -1,10 +1,13 @@
 import * as THREE from "three";
-const EnergyFlowShader = {
-  uniforms: {
-    uTime: { value: 0 },
-    uColor: { value: new THREE.Color("#009b4d") }
+import { shaderMaterial } from "@react-three/drei";
+
+const EnergyFlowShaderMaterial = shaderMaterial(
+  {
+    uTime: 0,
+    uColor: new THREE.Color("#009b4d")
   },
-  vertexShader: `
+  // vertex shader
+  `
     varying vec2 vUv;
     uniform float uTime;
     void main() {
@@ -12,7 +15,8 @@ const EnergyFlowShader = {
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
-  fragmentShader: `
+  // fragment shader
+  `
     varying vec2 vUv;
     uniform float uTime;
     uniform vec3 uColor;
@@ -21,5 +25,6 @@ const EnergyFlowShader = {
       gl_FragColor = vec4(uColor, flow * 0.5);
     }
   `
-};
-export default EnergyFlowShader;
+);
+
+export default EnergyFlowShaderMaterial;
