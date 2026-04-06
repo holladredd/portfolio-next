@@ -1,33 +1,48 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import useStore from "@/store/useStore";
-import * as THREE from "three";
 import { useRef, useEffect } from "react";
+import * as THREE from "three";
+import useStore from "@/store/useStore";
+
+const clusterPositions = {
+  home: [0, 0, 15],
+  about: [-8, 4, -2],
+  projects: [8, -4, -2],
+  skills: [-4, -8, -2],
+};
 
 export default function CameraController() {
   const { camera } = useThree();
-  const { focusedCluster } = useStore();
-  const targetPos = useRef(new THREE.Vector3(0, 0, 15));
+  const { focusedCluster, mode } = useStore();
+  
+  // Start from a "Long Shot" cinematic position
+  const targetPos = useRef(new THREE.Vector3(0, 50, 60));
   const lookAtPos = useRef(new THREE.Vector3(0, 0, 0));
 
   useEffect(() => {
-    if (focusedCluster === "about") {
-       targetPos.current.set(-5, 2, 5);
-       lookAtPos.current.set(-8, 4, -10);
-    } else if (focusedCluster === "projects") {
-       targetPos.current.set(5, -2, 5);
-       lookAtPos.current.set(8, -4, -10);
-    } else if (focusedCluster === "skills") {
-       targetPos.current.set(-2, -5, 5);
-       lookAtPos.current.set(-4, -8, -10);
+    if (mode === "intro") {
+      // Awakening intro: slowly move from far into the realm
+      targetPos.current.set(0, 0, 25);
+    } else if (focusedCluster && clusterPositions[focusedCluster]) {
+      const [x, y, z] = clusterPositions[focusedCluster];
+      targetPos.current.set(x, y, z + 8);
+      lookAtPos.current.set(x, y, z);
     } else {
-       targetPos.current.set(0, 0, 15);
-       lookAtPos.current.set(0, 0, 0);
+      targetPos.current.set(0, 0, 15);
+      lookAtPos.current.set(0, 0, 0);
     }
-  }, [focusedCluster]);
+  }, [focusedCluster, mode]);
 
-  useFrame(() => {
-    camera.position.lerp(targetPos.current, 0.05);
+  useFrame((state) => {
+    // Smooth interpolation for cinematic movement
+    camera.position.lerp(targetPos.current, 0.03);
+    
+    const lookAtTarget = new THREE.Vector3();
+    lookAtTarget.lerpVectors(camera.position, lookAtPos.current, 0.1);
     camera.lookAt(lookAtPos.current);
+    
+    // Subtle breathing effect
+    camera.position.y += Math.sin(state.clock.getElapsedTime()) * 0.002;
   });
+
   return null;
 }

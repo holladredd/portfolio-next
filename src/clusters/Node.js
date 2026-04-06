@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import * as THREE from "three";
@@ -7,6 +7,7 @@ import * as THREE from "three";
 export default function Node({ id, position, text }) {
   const meshRef = useRef();
   const materialRef = useRef();
+  const { mouse } = useThree();
   const { focusedNode, setFocusedNode, theme } = useStore();
   const [hovered, setHovered] = useState(false);
 
@@ -17,13 +18,17 @@ export default function Node({ id, position, text }) {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
     
-    const s = hovered ? 1.2 : 1.0;
+    const nodePos = new THREE.Vector3(...position);
+    const mousePos = new THREE.Vector3(mouse.x * 20, mouse.y * 15, 0);
+    const proximity = Math.max(0, 1 - nodePos.distanceTo(mousePos) / 5);
+
+    const s = (hovered ? 1.2 : 1.0) + (proximity * 0.3);
     meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
     meshRef.current.rotation.y = time * 0.5;
 
     if (materialRef.current) {
       materialRef.current.uTime = time;
-      materialRef.current.uDistortion = hovered ? 0.4 : 0.1;
+      materialRef.current.uDistortion = (hovered ? 0.4 : 0.1) + proximity * 0.2;
     }
   });
 

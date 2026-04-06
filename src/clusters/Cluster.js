@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Text, Float, Sparkles } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import Node from "./Node";
@@ -8,6 +8,7 @@ import * as THREE from "three";
 export default function Cluster({ id, position, text, childrenData = [] }) {
   const meshRef = useRef();
   const portalRef = useRef();
+  const { mouse } = useThree();
   const { focusedCluster, setFocusedCluster, unlockedClusters, theme } = useStore();
   const [hovered, setHovered] = useState(false);
 
@@ -18,13 +19,18 @@ export default function Cluster({ id, position, text, childrenData = [] }) {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
     
-    const s = hovered && isUnlocked ? 1.2 : 1.0;
+    // Calculate cursor proximity in 3D-ish space
+    const clusterPos = new THREE.Vector3(...position);
+    const mousePos = new THREE.Vector3(mouse.x * 20, mouse.y * 15, 0);
+    const proximity = Math.max(0, 1 - clusterPos.distanceTo(mousePos) / 10);
+
+    const s = (hovered && isUnlocked ? 1.2 : 1.0) + (isUnlocked ? proximity * 0.2 : 0);
     meshRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
     meshRef.current.rotation.y = time * 0.3;
 
     if (portalRef.current) {
       portalRef.current.uTime = time;
-      portalRef.current.uIntensity = hovered ? 2.0 : 1.0;
+      portalRef.current.uIntensity = (hovered ? 2.0 : 1.0) + proximity;
     }
   });
 
