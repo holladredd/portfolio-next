@@ -1,47 +1,14 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-  mode: "intro",
-  theme: "dark",
-  focusedCluster: null,
-  focusedNode: null,
-  visitedClusters: ["home"],
-  unlockedClusters: ["home", "about"],
-  subtitleText: "",
-  showSubtitles: false,
-  isSpeaking: false,
-  isInteracting: false,
+  currentRoom: "lobby",
+  selectedExhibit: null,
+  hudData: null,
+  isHUDVisible: false,
 
-  setMode: (mode) => set({ mode }),
-  setTheme: (theme) => set({ theme }),
-  setIsSpeaking: (isSpeaking) => set({ isSpeaking }),
-  setIsInteracting: (isInteracting) => set({ isInteracting }),
-  
-  setFocusedCluster: (id) => set((state) => {
-    const nextVisited = state.visitedClusters.includes(id) 
-      ? state.visitedClusters 
-      : [...state.visitedClusters, id];
-    let nextUnlocked = [...state.unlockedClusters];
-    if (id === "about" && !nextUnlocked.includes("projects")) nextUnlocked.push("projects");
-    if (id === "projects" && !nextUnlocked.includes("skills")) nextUnlocked.push("skills");
-    return { 
-      focusedCluster: id, 
-      visitedClusters: nextVisited,
-      unlockedClusters: nextUnlocked
-    };
-  }),
-  
-  setFocusedNode: (node) => set({ focusedNode: node }),
-  clearSubtitles: () => set({ showSubtitles: false, subtitleText: "" }),
-  
-  setSubtitles: (text, duration = 5000) => {
-    set({ subtitleText: text, showSubtitles: true });
-    if (duration > 0) {
-      setTimeout(() => set({ showSubtitles: false }), duration);
-    }
-  },
-  
-  resetFocus: () => set({ focusedCluster: null, focusedNode: null }),
+  setRoom: (room) => set({ currentRoom: room, isHUDVisible: false, selectedExhibit: null }),
+  setExhibit: (exhibit) => set({ selectedExhibit: exhibit, hudData: exhibit, isHUDVisible: true }),
+  closeHUD: () => set({ isHUDVisible: false, selectedExhibit: null }),
 }));
 
 export default useStore;
