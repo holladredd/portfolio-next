@@ -1,0 +1,77 @@
+import { Canvas, extend } from "@react-three/fiber";
+import { Suspense } from "react";
+import { Stars, OrbitControls } from "@react-three/drei";
+import useStore from "../../store/useStore";
+
+// Modular Component Imports
+import ParticleField from "./ParticleField";
+import CameraController from "./CameraController";
+import Cluster from "../clusters/Cluster";
+import EnergyLinks from "../clusters/EnergyLinks";
+import Dredd from "../dredd/Dredd";
+import DreddAI from "../dredd/DreddAI";
+
+// Shader Imports (Extending R3F with custom materials)
+import EnergyFlowMaterial from "../Three/Shaders/EnergyFlowShader";
+import PortalShaderMaterial from "../Three/Shaders/PortalShader";
+import QuantumDistortionMaterial from "../Three/Shaders/DistortionShader";
+
+extend({ EnergyFlowMaterial, PortalShaderMaterial, QuantumDistortionMaterial });
+
+const clusters = [
+  { id: "about", position: [-8, 4, -10], text: "ABOUT" },
+  { id: "projects", position: [8, -4, -10], text: "PROJECTS" },
+  { id: "skills", position: [-4, -8, -10], text: "SKILLS" }
+];
+
+export default function QuantumScene() {
+  const { theme } = useStore();
+  const spaceColor = theme === "dark" ? "#000000" : "#0f172a";
+
+  return (
+    <div className="fixed inset-0 -z-10 bg-black">
+      <Canvas
+        shadows
+        dpr={[1, 2]}
+        gl={{ 
+          antialias: true, 
+          alpha: true, 
+          powerPreference: "high-performance",
+        }}
+      >
+        <Suspense fallback={null}>
+          <color attach="background" args={[spaceColor]} />
+          
+          {/* Global Lights */}
+          <ambientLight intensity={0.2} />
+          <pointLight position={[20, 20, 20]} intensity={1} color="#3b82f6" />
+          <pointLight position={[-20, -20, -20]} intensity={1} color="#009b4d" />
+          
+          <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+
+          {/* 3D Scene Composition */}
+          <CameraController />
+          <ParticleField count={4000} />
+          <EnergyLinks />
+          
+          <group>
+            {clusters.map((c) => (
+              <Cluster key={c.id} {...c} />
+            ))}
+          </group>
+
+          {/* Dredd AI Suite */}
+          <Dredd />
+          <DreddAI />
+
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false} 
+            rotateSpeed={0.3} 
+            makeDefault 
+          />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+}
