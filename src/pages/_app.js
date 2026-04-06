@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { ThemeProvider } from "next-themes";
-import QueryProvider from "@/context/QueryProvider";
+import QueryProvider from "@/components/QueryProvider";
 import Layout from "@/components/Layout";
 
 export default function App({ Component, pageProps }) {

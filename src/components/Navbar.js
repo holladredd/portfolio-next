@@ -1,27 +1,27 @@
-import Link from "next/link; 
-import { useState, useEffect } from "react; 
-import { motion, AnimatePresence } from "framer-motion; 
-import { Menu, X, Home, User, Briefcase, Mail } from "lucide-react; 
-import ThemeToggle from "@/ui/ThemeToggle; 
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, Home, User, Briefcase, Mail } from "lucide-react";
+import ThemeToggle from "@/ui/ThemeToggle";
 
 const navItems = [
   { id: 1, text: "Home", link: "/", icon: <Home size={20} /> },
   { id: 2, text: "About", link: "/about", icon: <User size={20} /> },
   { id: 3, text: "Project", link: "/project", icon: <Briefcase size={20} /> },
   { id: 4, text: "Contact", link: "/contact", icon: <Mail size={20} /> },
-]; 
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false); 
-  const [scrolled, setScrolled] = useState(false); 
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50); 
-    }; 
-    window.addEventListener("scroll", handleScroll); 
-    return () => window.removeEventListener("scroll", handleScroll); 
-  }, []); 
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6">
@@ -30,7 +30,7 @@ export default function Navbar() {
           <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent transition-transform group-hover:scale-110">
             <img src="/img/hd.png" alt="Logo" className="w-full h-full object-cover" />
           </div>
-          <span className="font-squids text-2xl tracking-tighter text-foreground text-white">
+          <span className="font-squids text-2xl tracking-tighter text-white">
             DREDD
           </span>
         </Link>
@@ -45,5 +45,5 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  ); 
+  );
 }
