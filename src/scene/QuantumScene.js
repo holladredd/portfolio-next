@@ -1,20 +1,20 @@
 import { Canvas, extend } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Stars, OrbitControls } from "@react-three/drei";
-import useStore from "../../store/useStore";
+import useStore from "@/store/useStore";
 
 // Modular Component Imports
 import ParticleField from "./ParticleField";
 import CameraController from "./CameraController";
-import Cluster from "../clusters/Cluster";
-import EnergyLinks from "../clusters/EnergyLinks";
-import Dredd from "../dredd/Dredd";
-import DreddAI from "../dredd/DreddAI";
+import Cluster from "@/clusters/Cluster";
+import EnergyLinks from "@/clusters/EnergyLinks";
+import Dredd from "@/dredd/Dredd";
+import DreddAI from "@/dredd/DreddAI";
 
 // Shader Imports (Extending R3F with custom materials)
-import EnergyFlowMaterial from "../Three/Shaders/EnergyFlowShader";
-import PortalShaderMaterial from "../Three/Shaders/PortalShader";
-import QuantumDistortionMaterial from "../Three/Shaders/DistortionShader";
+import EnergyFlowMaterial from "@/scene/Shaders/EnergyFlowShader";
+import PortalShaderMaterial from "@/scene/Shaders/PortalShader";
+import QuantumDistortionMaterial from "@/scene/Shaders/DistortionShader";
 
 extend({ EnergyFlowMaterial, PortalShaderMaterial, QuantumDistortionMaterial });
 
@@ -41,15 +41,11 @@ export default function QuantumScene() {
       >
         <Suspense fallback={null}>
           <color attach="background" args={[spaceColor]} />
-          
-          {/* Global Lights */}
           <ambientLight intensity={0.2} />
           <pointLight position={[20, 20, 20]} intensity={1} color="#3b82f6" />
           <pointLight position={[-20, -20, -20]} intensity={1} color="#009b4d" />
-          
           <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
 
-          {/* 3D Scene Composition */}
           <CameraController />
           <ParticleField count={4000} />
           <EnergyLinks />
@@ -60,7 +56,6 @@ export default function QuantumScene() {
             ))}
           </group>
 
-          {/* Dredd AI Suite */}
           <Dredd />
           <DreddAI />
 

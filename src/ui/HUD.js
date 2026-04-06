@@ -37,7 +37,7 @@ export default function HUD() {
 
             <div className="space-y-6">
               <p className="font-anta text-foreground/70 leading-relaxed italic text-sm">
-                "{content.description}"
+                &quot;{content.description}&quot;
               </p>
 
               {content.stats && (
