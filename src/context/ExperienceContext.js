@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 
 const ExperienceContext = createContext();
@@ -11,27 +11,7 @@ export function ExperienceProvider({ children }) {
   const [showSubtitles, setShowSubtitles] = useState(false);
   const [currentSubtitle, setCurrentSubtitle] = useState("");
 
-  // Adaptive AI Logic
-  useEffect(() => {
-    const path = router.pathname.replace("/", "") || "home";
-    
-    if (!visitedNodes.includes(path)) {
-      setVisitedNodes((prev) => [...prev, path]);
-      triggerDreddDialogue(path, "new");
-    } else {
-      triggerDreddDialogue(path, "revisit");
-    }
-
-    // Propagation System (Game Mechanics)
-    if (path === "about" && !unlockedNodes.includes("project")) {
-       setUnlockedNodes((prev) => [...prev, "project"]);
-    }
-    if (path === "project" && !unlockedNodes.includes("contact")) {
-       setUnlockedNodes((prev) => [...prev, "contact"]);
-    }
-  }, [router.pathname]);
-
-  const triggerDreddDialogue = (node, type) => {
+  const triggerDreddDialogue = useCallback((node, type) => {
     const dialogues = {
       home: {
         new: "The universe is expansive. Where shall we begin?",
@@ -55,7 +35,35 @@ export function ExperienceProvider({ children }) {
     setCurrentSubtitle(msg);
     setShowSubtitles(true);
     setTimeout(() => setShowSubtitles(false), 5000);
-  };
+  }, []);
+
+  // Adaptive AI Logic
+  useEffect(() => {
+    const path = router.pathname.replace("/", "") || "home";
+    
+    setVisitedNodes((prev) => {
+      if (!prev.includes(path)) {
+        triggerDreddDialogue(path, "new");
+        return [...prev, path];
+      } else {
+        triggerDreddDialogue(path, "revisit");
+        return prev;
+      }
+    });
+
+    // Progression System (Game Mechanics)
+    setUnlockedNodes((prev) => {
+      let next = [...prev];
+      if (path === "about" && !prev.includes("project")) {
+         next.push("project");
+      }
+      if (path === "project" && !prev.includes("contact")) {
+         next.push("contact");
+      }
+      return next;
+    });
+
+  }, [router.pathname, triggerDreddDialogue]);
 
   return (
     <ExperienceContext.Provider

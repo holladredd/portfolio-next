@@ -31,7 +31,7 @@ export default function Layout({ children }) {
           >
             <div className="text-accent font-squids text-[10px] uppercase tracking-[0.3em] mb-2">DREDD COMMS_ESTABLISHED</div>
             <p className="text-xl font-anta text-foreground leading-relaxed italic">
-              "{currentSubtitle}"
+            &quot;{currentSubtitle}&quot;
             </p>
           </motion.div>
         )}
