@@ -45,40 +45,52 @@ export default function Exhibit({ position, rotation = [0, 0, 0], data, type = "
     >
       {type === "panel" && (
         <>
-          <mesh castShadow>
+          <mesh castShadow receiveShadow>
             <boxGeometry args={[3, 4, 0.1]} />
             <meshPhysicalMaterial 
               color="#111111" 
               metalness={0.9} 
-              roughness={0.1} 
+              roughness={0.05} 
               clearcoat={1} 
-              clearcoatRoughness={0.1}
-              emissive={hovered ? "#333333" : "#000000"}
+              emissive={hovered ? "#38bdf8" : "#000000"}
+              emissiveIntensity={hovered ? 0.2 : 0}
             />
           </mesh>
-          {/* Border Glow */}
+          {/* Cyan Glow Border */}
           <mesh position={[0, 0, -0.01]}>
-            <boxGeometry args={[3.1, 4.1, 0.05]} />
-            <meshBasicMaterial color={hovered ? "#ffffff" : "#222222"} transparent opacity={hovered ? 0.3 : 0.1} />
+            <boxGeometry args={[3.08, 4.08, 0.05]} />
+            <meshBasicMaterial color={hovered ? "#38bdf8" : "#222222"} transparent opacity={hovered ? 0.3 : 0.05} />
           </mesh>
+          {/* Holographic Bitstream Overlay */}
+          <Text 
+            position={[1.6, 1.8, 0.1]} 
+            fontSize={0.12} 
+            color="#38bdf8" 
+            anchorX="left" 
+            anchorY="top" 
+            opacity={hovered ? 1 : 0.4}
+            font="/fonts/Anta-Regular.ttf"
+          >
+            {"01\n11\n00\n10"}
+          </Text>
         </>
       )}
       
       {type === "node" && (
-        <mesh castShadow>
+        <mesh castShadow receiveShadow>
           <icosahedronGeometry args={[0.8, 1]} />
           <meshPhysicalMaterial 
             color="#222222" 
             metalness={1} 
             roughness={0} 
             clearcoat={1}
-            emissive={hovered ? "#ffffff" : "#111111"}
-            emissiveIntensity={hovered ? 0.5 : 0.1}
+            emissive={hovered ? "#38bdf8" : "#111111"}
+            emissiveIntensity={hovered ? 2 : 0.2}
           />
         </mesh>
       )}
 
-      {/* Exhibit Label */}
+      {/* Label - System Font Style */}
       <group position={[0, type === "panel" ? -2.4 : -1.5, 0.1]}>
         <Text 
           fontSize={0.2} 
@@ -86,7 +98,7 @@ export default function Exhibit({ position, rotation = [0, 0, 0], data, type = "
           anchorX="center" 
           anchorY="top"
           font="/fonts/Anta-Regular.ttf"
-          letterSpacing={0.1}
+          letterSpacing={0.15}
           uppercase
         >
           {data.name || data.title}
