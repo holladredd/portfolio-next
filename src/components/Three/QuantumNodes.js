@@ -3,6 +3,8 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Float, Text, MeshDistortMaterial, Sparkles, Ring } from "@react-three/drei";
 import { useRouter } from "next/router";
 import { useExperience } from "@/context/ExperienceContext";
+import PortalShaderMaterial from "./Shaders/PortalShader";
+import QuantumDistortionMaterial from "./Shaders/DistortionShader";
 import * as THREE from "three";
 
 const nodesData = [
@@ -57,15 +59,16 @@ function Node({ data }) {
 
   return (
     <group>
-      {/* Focus Aura Ring */}
+      {/* Focus Aura Ring with Portal Shader */}
       {hovered && isUnlocked && (
-        <Ring 
-          ref={auraRef} 
-          args={[1.8, 2, 64]} 
-          position={data.position}
-        >
-          <meshBasicMaterial color="#009b4d" transparent opacity={0.4} />
-        </Ring>
+        <mesh position={data.position} ref={auraRef}>
+           <planeGeometry args={[4, 4]} />
+           <portalShaderMaterial 
+             transparent 
+             uColor={new THREE.Color("#009b4d")}
+             uIntensity={0.6}
+           />
+        </mesh>
       )}
 
       <mesh
@@ -76,15 +79,10 @@ function Node({ data }) {
         onPointerOut={() => setHovered(false)}
       >
         <torusKnotGeometry args={[1, 0.3, 128, 16]} />
-        <MeshDistortMaterial
-          color={!isUnlocked ? "#111827" : (hovered ? "#009b4d" : (isVisited ? "#3b82f6" : "#60a5fa"))}
-          speed={isUnlocked ? 4 : 0.5}
-          distort={isUnlocked ? 0.4 : 0.05}
-          radius={1}
-          emissive={!isUnlocked ? "#000000" : (hovered ? "#052e16" : (isVisited ? "#1e3a8a" : "#1e40af"))}
-          emissiveIntensity={isUnlocked ? 3 : 0}
+        <quantumDistortionMaterial
+          uColor={new THREE.Color(!isUnlocked ? "#111827" : (hovered ? "#009b4d" : (isVisited ? "#3b82f6" : "#60a5fa")))}
+          uDistortion={isUnlocked ? (hovered ? 0.5 : 0.2) : 0.05}
           transparent
-          opacity={isUnlocked ? 0.95 : 0.2}
         />
         
         {/* Discovery Burst (Persistent Sparkle) */}

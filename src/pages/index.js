@@ -6,9 +6,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="relative w-full h-full min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-6 overflow-hidden">
-      {/* Background blobs for "Premium" look */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] -z-10 animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px] -z-10 animate-pulse delay-700" />
 
       <div className="max-w-5xl w-full flex flex-col md:flex-row items-center gap-16">
         {/* Left Side: Text */}
