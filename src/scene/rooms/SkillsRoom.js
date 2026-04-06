@@ -11,23 +11,14 @@ export default function SkillsRoom({ position }) {
   return (
     <group position={position}>
       <SolidRoom title="CORE: SKILLS" size={[30, 12, 30]} />
-
-      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
-      
-      {/* Central Pedestal Display Area */}
+      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label="RETURN TO LOBBY" onClick={(pos) => setRoom("lobby", pos)} />
       {skills.map((s, i) => {
         const angle = (i / skills.length) * Math.PI * 2; 
         const radius = 6;
         const x = Math.cos(angle) * radius;
         const z = Math.sin(angle) * radius;
         return (
-           <Exhibit 
-             key={s.name} 
-             position={[x, 1, z]} 
-             rotation={[0, -angle, 0]} 
-             data={s} 
-             type="node" 
-           />
+           <Exhibit key={s.name} position={[x, 1, z]} rotation={[0, -angle, 0]} data={s} type="node" />
         );
       })}
     </group>

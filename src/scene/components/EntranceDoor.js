@@ -1,15 +1,38 @@
 import { Text } from "@react-three/drei";
+import useStore from "@/store/useStore";
+import * as THREE from "three";
 
 export default function EntranceDoor({ position, rotation = [0, 0, 0], label, onClick }) {
+  const { isTransitioning } = useStore();
+
   return (
     <group position={position} rotation={rotation}>
-      {/* Archway Portal */}
-      <mesh position={[0, 3, 0]} onClick={(e) => { e.stopPropagation(); onClick(); }}
-        onPointerOver={() => document.body.style.cursor = "pointer"}
-        onPointerOut={() => document.body.style.cursor = "default"}
+      {/* Archway Portal - Gateway Pulse */}
+      <mesh 
+        position={[0, 3, 0]} 
+        onClick={(e) => { 
+          e.stopPropagation(); 
+          if (!isTransitioning) {
+            // Capture world position for cinematic facing
+            const worldPos = new THREE.Vector3();
+            e.eventObject.getWorldPosition(worldPos);
+            onClick([worldPos.x, worldPos.y, worldPos.z]); 
+          }
+        }}
+        onPointerOver={() => {
+          if (!isTransitioning) document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          document.body.style.cursor = "default";
+        }}
       >
          <boxGeometry args={[4.2, 6.2, 0.2]} />
-         <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.5} wireframe />
+         <meshStandardMaterial 
+           color="#38bdf8" 
+           emissive="#38bdf8" 
+           emissiveIntensity={isTransitioning ? 2 : 0.5} 
+           wireframe 
+         />
       </mesh>
       
       {/* Solid Door Frame */}

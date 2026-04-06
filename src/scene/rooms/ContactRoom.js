@@ -18,18 +18,10 @@ export default function ContactRoom({ position }) {
   return (
     <group position={position} rotation={[0, Math.PI, 0]}>
       <SolidRoom title="UPLINK: CONTACT" size={[20, 12, 20]} />
-
-      <EntranceDoor position={[0, 0, 9.8]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
-      
-      {/* Contact Terminal Display */}
+      <EntranceDoor position={[0, 0, 9.8]} rotation={[0, Math.PI, 0]} label="RETURN TO LOBBY" onClick={(pos) => setRoom("lobby", pos)} />
       <group position={[0, 2, 0]}>
         {connections.map((c, i) => (
-           <Exhibit 
-             key={c.name} 
-             position={[(-4 + i * 2), 0, -5]} 
-             data={c} 
-             type="node" 
-           />
+           <Exhibit key={c.name} position={[(-4 + i * 2), 0, -5]} data={c} type="node" />
         ))}
         <Text position={[0, -1.5, -5]} fontSize={0.2} color="#38bdf8" uppercase font="/fonts/Anta-Regular.ttf">
           SELECT PROTOCOL TO INITIATE UPLINK
