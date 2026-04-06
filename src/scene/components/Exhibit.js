@@ -11,13 +11,14 @@ export default function Exhibit({ position, rotation = [0, 0, 0], data, type = "
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2 + position[0]) * 0.1;
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 1.5 + position[0]) * 0.05;
       
-      const s = hovered ? 1.05 : 1.0;
+      const s = hovered ? 1.08 : 1.0;
       groupRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1);
       
       if (type === "node") {
-        groupRef.current.rotation.y += 0.01;
+        groupRef.current.rotation.y += 0.005;
+        groupRef.current.rotation.z += 0.003;
       }
     }
   });
@@ -43,38 +44,54 @@ export default function Exhibit({ position, rotation = [0, 0, 0], data, type = "
       }}
     >
       {type === "panel" && (
-        <mesh>
-          <boxGeometry args={[3, 4, 0.1]} />
-          <meshStandardMaterial 
-            color="#222222" 
-            emissive={hovered ? "#444444" : "#000000"} 
-            roughness={0.2} 
-            metalness={0.8} 
-          />
-        </mesh>
+        <>
+          <mesh castShadow>
+            <boxGeometry args={[3, 4, 0.1]} />
+            <meshPhysicalMaterial 
+              color="#111111" 
+              metalness={0.9} 
+              roughness={0.1} 
+              clearcoat={1} 
+              clearcoatRoughness={0.1}
+              emissive={hovered ? "#333333" : "#000000"}
+            />
+          </mesh>
+          {/* Border Glow */}
+          <mesh position={[0, 0, -0.01]}>
+            <boxGeometry args={[3.1, 4.1, 0.05]} />
+            <meshBasicMaterial color={hovered ? "#ffffff" : "#222222"} transparent opacity={hovered ? 0.3 : 0.1} />
+          </mesh>
+        </>
       )}
       
       {type === "node" && (
-        <mesh>
-          <octahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial 
-            color="#333333" 
-            emissive={hovered ? "#6b7280" : "#111111"} 
-            wireframe={hovered} 
+        <mesh castShadow>
+          <icosahedronGeometry args={[0.8, 1]} />
+          <meshPhysicalMaterial 
+            color="#222222" 
+            metalness={1} 
+            roughness={0} 
+            clearcoat={1}
+            emissive={hovered ? "#ffffff" : "#111111"}
+            emissiveIntensity={hovered ? 0.5 : 0.1}
           />
         </mesh>
       )}
 
-      {/* Label */}
-      <Text 
-        position={[0, type === "panel" ? -2.3 : -1.5, 0.1]} 
-        fontSize={0.25} 
-        color={hovered ? "white" : "#888888"} 
-        anchorX="center" 
-        anchorY="top"
-      >
-        {data.name || data.title}
-      </Text>
+      {/* Exhibit Label */}
+      <group position={[0, type === "panel" ? -2.4 : -1.5, 0.1]}>
+        <Text 
+          fontSize={0.2} 
+          color={hovered ? "white" : "#666666"} 
+          anchorX="center" 
+          anchorY="top"
+          font="/fonts/Anta-Regular.ttf"
+          letterSpacing={0.1}
+          uppercase
+        >
+          {data.name || data.title}
+        </Text>
+      </group>
     </group>
   );
 }

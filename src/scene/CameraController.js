@@ -4,10 +4,10 @@ import * as THREE from "three";
 import useStore from "@/store/useStore";
 
 const roomCoordinates = {
-  lobby: { pos: [0, 2, 8], lookAt: [0, 1, 0] },
-  projects: { pos: [-20, 2, -15], lookAt: [-20, 1, -20] },
-  skills: { pos: [20, 2, -15], lookAt: [20, 1, -20] },
-  about: { pos: [0, 2, -25], lookAt: [0, 1, -30] }
+  lobby: { pos: [0, 2, 10], lookAt: [0, 1, 0] },
+  projects: { pos: [-30, 2, -25], lookAt: [-30, 1, -30] },
+  skills: { pos: [30, 2, -25], lookAt: [30, 1, -30] },
+  about: { pos: [0, 2, -45], lookAt: [0, 1, -50] }
 };
 
 export default function CameraController() {
