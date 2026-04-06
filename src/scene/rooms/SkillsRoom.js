@@ -2,7 +2,7 @@ import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
 import Exhibit from "../components/Exhibit";
-import LabFrame from "../components/LabFrame";
+import SolidRoom from "../components/SolidRoom";
 import { skills } from "@/data/content";
 
 export default function SkillsRoom({ position }) {
@@ -10,14 +10,14 @@ export default function SkillsRoom({ position }) {
 
   return (
     <group position={position}>
-      <LabFrame title="CORE: SKILLS" />
+      <SolidRoom title="CORE: SKILLS" size={[30, 12, 30]} />
 
-      <EntranceDoor position={[0, 0, 10]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
+      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
       
-      {/* Central Pedestal Arrangement */}
+      {/* Central Pedestal Display Area */}
       {skills.map((s, i) => {
         const angle = (i / skills.length) * Math.PI * 2; 
-        const radius = 4;
+        const radius = 6;
         const x = Math.cos(angle) * radius;
         const z = Math.sin(angle) * radius;
         return (

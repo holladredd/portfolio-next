@@ -1,29 +1,29 @@
 import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
-import LabFrame from "../components/LabFrame";
+import SolidRoom from "../components/SolidRoom";
 
 export default function AboutRoom({ position }) {
   const { setRoom } = useStore();
 
   return (
     <group position={position}>
-      <LabFrame title="SYSTEM: PROFILE" />
+      <SolidRoom title="SYSTEM: PROFILE" size={[20, 12, 20]} />
 
-      <EntranceDoor position={[0, 0, 10]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
+      <EntranceDoor position={[0, 0, 9.8]} rotation={[0, Math.PI, 0]} label="BACK TO LOBBY" onClick={() => setRoom("lobby")} />
       
-      <mesh position={[0, 2, -5]}>
-        <boxGeometry args={[12, 6, 0.2]} />
-        <meshStandardMaterial color="#050505" roughness={0.5} metalness={0.9} />
+      <mesh position={[0, 4, -9.8]}>
+        <boxGeometry args={[14, 8, 0.2]} />
+        <meshStandardMaterial color="#050505" roughness={0.1} metalness={0.9} />
       </mesh>
       
       <Text 
-        position={[-5.5, 4.5, -4.8]} 
-        fontSize={0.3} 
+        position={[-6.5, 7.5, -9.6]} 
+        fontSize={0.35} 
         color="#ffffff" 
         anchorX="left" 
         anchorY="top" 
-        maxWidth={11} 
+        maxWidth={13} 
         lineHeight={1.4} 
         font="/fonts/Anta-Regular.ttf"
       >

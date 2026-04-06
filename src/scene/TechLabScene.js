@@ -7,6 +7,8 @@ import Lobby from "./rooms/Lobby";
 import ProjectsRoom from "./rooms/ProjectsRoom";
 import SkillsRoom from "./rooms/SkillsRoom";
 import AboutRoom from "./rooms/AboutRoom";
+import ContactRoom from "./rooms/ContactRoom";
+import GraphicsRoom from "./rooms/GraphicsRoom";
 
 export default function TechLabScene() {
   return (
@@ -22,7 +24,7 @@ export default function TechLabScene() {
         camera={{ position: [0, 2, 10], fov: 60 }}
       >
         <color attach="background" args={["#050505"]} />
-        <fog attach="fog" args={["#050505", 15, 60]} />
+        <fog attach="fog" args={["#050505", 15, 80]} />
 
         <Suspense fallback={null}>
           <Environment preset="city" />
@@ -31,9 +33,8 @@ export default function TechLabScene() {
           <pointLight position={[10, 10, 10]} intensity={1.5} color="#ffffff" castShadow />
           <pointLight position={[-10, 10, -10]} intensity={0.5} color="#1e293b" />
           
-          {/* Deep Mirror Reflector Floor */}
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
-            <planeGeometry args={[100, 100]} />
+            <planeGeometry args={[200, 200]} />
             <MeshReflectorMaterial
               blur={[300, 100]}
               resolution={1024}
@@ -52,9 +53,11 @@ export default function TechLabScene() {
 
           <group>
             <Lobby position={[0, 0, 0]} />
-            <ProjectsRoom position={[-30, 0, -30]} />
-            <SkillsRoom position={[30, 0, -30]} />
+            <ProjectsRoom position={[-40, 0, -30]} />
+            <SkillsRoom position={[40, 0, -30]} />
             <AboutRoom position={[0, 0, -60]} />
+            <ContactRoom position={[0, 0, 50]} />
+            <GraphicsRoom position={[-40, 0, -70]} />
           </group>
 
           <EffectComposer disableNormalPass>
