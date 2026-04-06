@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Facebook, Instagram, Github, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { FaFacebook, FaInstagram, FaGithub, FaXTwitter } from "react-icons/fa6";
 
 const links = [
-  { id: 1, name: "Facebook", link: "https://web.facebook.com/folayan.olamide.1", icon: <Facebook size={24} />, color: "#1877F2" },
-  { id: 2, name: "Instagram", link: "https://www.instagram.com/dev_dredd?igsh=NXozcGk5eTFoajZo", icon: <Instagram size={24} />, color: "#E4405F" },
-  { id: 3, name: "GitHub", link: "https://github.com/holladredd", icon: <Github size={24} />, color: "#181717" },
-  { id: 4, name: "Twitter", link: "https://x.com/Holla_Dredd?s=09", icon: <Twitter size={24} />, color: "#1DA1F2" },
+  { id: 1, name: "Facebook", link: "https://web.facebook.com/folayan.olamide.1", icon: <FaFacebook size={24} />, color: "#1877F2" },
+  { id: 2, name: "Instagram", link: "https://www.instagram.com/dev_dredd?igsh=NXozcGk5eTFoajZo", icon: <FaInstagram size={24} />, color: "#E4405F" },
+  { id: 3, name: "GitHub", link: "https://github.com/holladredd", icon: <FaGithub size={24} />, color: "#181717" },
+  { id: 4, name: "Twitter", link: "https://x.com/Holla_Dredd?s=09", icon: <FaXTwitter size={24} />, color: "#1DA1F2" },
 ];
 
 export default function Contact() {

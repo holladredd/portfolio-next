@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Github, Twitter, Instagram } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
+import { FaGithub, FaXTwitter, FaInstagram } from "react-icons/fa6";
 import Link from "next/link";
 
 export default function Home() {
@@ -47,9 +48,9 @@ export default function Home() {
 
             {/* Social Links */}
             <div className="mt-12 flex items-center justify-center md:justify-start gap-6 text-foreground/40">
-              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><Github size={24} /></Link>
-              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><Twitter size={24} /></Link>
-              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><Instagram size={24} /></Link>
+              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><FaGithub size={24} /></Link>
+              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><FaXTwitter size={24} /></Link>
+              <Link href="#" className="hover:text-accent hover:scale-120 transition-all"><FaInstagram size={24} /></Link>
             </div>
           </motion.div>
         </div>

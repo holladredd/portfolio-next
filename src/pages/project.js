@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Code } from "lucide-react";
+import { ExternalLink, Code } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 
 const projects = [
   { id: 1, title: "Fintech App", category: "Mobile App", image: "/img/dredd2.jpg", repo: "#", demo: "#" },
@@ -49,7 +50,7 @@ export default function Project() {
                     <ExternalLink size={16} /> Live
                   </button>
                   <button className="flex-1 flex items-center justify-center gap-2 glass py-3 rounded-2xl font-squids text-xs uppercase hover:bg-surface-dark transition-colors">
-                    <Github size={16} /> Code
+                    <FaGithub size={16} /> Code
                   </button>
                 </div>
               </div>
