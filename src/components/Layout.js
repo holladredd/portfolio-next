@@ -8,7 +8,9 @@ export default function Layout({ children }) {
     <div className="relative min-h-screen text-white bg-black">
       <TechLabScene />
       <LabHUD />
-      {children}
+      <div className="pointer-events-none relative z-10">
+        {children}
+      </div>
     </div>
   );
 }

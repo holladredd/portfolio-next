@@ -9,7 +9,7 @@ import AboutRoom from "./rooms/AboutRoom";
 
 export default function TechLabScene() {
   return (
-    <div className="fixed inset-0 -z-10 bg-black">
+    <div className="fixed inset-0 bg-black">
       <Canvas
         shadows
         dpr={[1, 2]}
