@@ -1,10 +1,20 @@
 import "@/styles/globals.css";
-import Layout from "@/components/Layout";
+import dynamic from 'next/dynamic';
+import Navbar from '@/components/Navbar';
+import HUD from '@/components/HUD';
+
+// Persistent Client-side 3D Scene
+const TechLabScene = dynamic(() => import('@/scene/TechLabScene'), { ssr: false });
 
 export default function App({ Component, pageProps }) {
   return (
-    <Layout>
+    <div className="min-h-screen bg-black overflow-hidden select-none">
+      <TechLabScene />
+      <Navbar />
+      <HUD />
+      
+      {/* Component serves as the URL anchor and 2D overlay layer */}
       <Component {...pageProps} />
-    </Layout>
+    </div>
   );
 }

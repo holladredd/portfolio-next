@@ -12,6 +12,14 @@ const useStore = create((set) => ({
   customLookTarget: null,
   setCustomLook: (pos) => set({ customLookTarget: pos }),
 
+  // For initial load or browser back/forward
+  setCurrentRoomDirectly: (room) => set({ 
+    currentRoom: room, 
+    nextRoom: null,
+    transitionPhase: "IDLE",
+    customLookTarget: null 
+  }),
+
   startTransition: (room, doorPos) => set((state) => ({ 
     previousRoom: state.currentRoom,
     nextRoom: room,

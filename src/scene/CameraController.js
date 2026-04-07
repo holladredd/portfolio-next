@@ -1,5 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
+import { useRouter } from "next/router";
 import * as THREE from "three";
 import useStore from "@/store/useStore";
 
@@ -8,20 +9,48 @@ const roomCoordinates = {
   projects: { pos: [-30, 2, 0], lookAt: [-30, 1, -10] },
   graphics: { pos: [-30, 2, -45], lookAt: [-30, 1, -55] },
   skills: { pos: [35, 2, 0], lookAt: [35, 1, -10] },
-  about: { pos: [0, 2, -35], lookAt: [0, 1, -45] }, // Adjoined to Lobby North
-  contact: { pos: [0, 2, 35], lookAt: [0, 1, 45] }  // Adjoined to Lobby South
+  about: { pos: [0, 2, -35], lookAt: [0, 1, -45] },
+  contact: { pos: [0, 2, 35], lookAt: [0, 1, 45] }
+};
+
+const pathToRoom = {
+  "/": "lobby",
+  "/projects": "projects",
+  "/skills": "skills",
+  "/about": "about",
+  "/contact": "contact",
+  "/graphics": "graphics"
 };
 
 export default function CameraController() {
   const { camera } = useThree();
-  const { currentRoom, transitionPhase, transitionTarget, customLookTarget, setEntering, setLanding, finishTransition } = useStore();
+  const router = useRouter();
+  const { 
+    currentRoom, 
+    transitionPhase, 
+    transitionTarget, 
+    customLookTarget, 
+    setCurrentRoomDirectly,
+    setEntering, 
+    setLanding, 
+    finishTransition 
+  } = useStore();
   
+  // URL to 3D State Sync: Enforce 100% address bar consistency
+  useEffect(() => {
+    const targetRoom = pathToRoom[router.pathname] || "lobby";
+    if (targetRoom !== currentRoom && transitionPhase === "IDLE") {
+      setCurrentRoomDirectly(targetRoom);
+    }
+  }, [router.pathname, currentRoom, transitionPhase, setCurrentRoomDirectly]);
+
   const currentLevelConfig = useMemo(() => roomCoordinates[currentRoom] || roomCoordinates.lobby, [currentRoom]);
   
   const targetPos = useRef(new THREE.Vector3(...currentLevelConfig.pos));
   const targetLook = useRef(new THREE.Vector3(...currentLevelConfig.lookAt));
   const currentLook = useRef(new THREE.Vector3(...currentLevelConfig.lookAt));
 
+  // Immediate state synchronization in the render pass
   targetPos.current.set(...currentLevelConfig.pos);
   if (customLookTarget) {
     targetLook.current.set(...customLookTarget);
@@ -30,7 +59,7 @@ export default function CameraController() {
   }
 
   useFrame((state) => {
-    // TELEPORT Velocity (Percentage based)
+    // KINETIC VELOCITY constants (Super Fast)
     const rotateSpeed = 0.8; 
     const walkSpeed = 0.7;   
     const arrivalSpeed = 0.8; 
@@ -39,24 +68,28 @@ export default function CameraController() {
       const lookAtDoor = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0));
       currentLook.current.lerp(lookAtDoor, rotateSpeed); 
       camera.lookAt(currentLook.current);
-      
       if (currentLook.current.distanceTo(lookAtDoor) < 0.5) setEntering();
     } 
     else if (transitionPhase === "ENTERING" && transitionTarget) {
       const targetEnterPos = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0));
       camera.position.lerp(targetEnterPos, walkSpeed); 
       
-      // Move even deeper to ensure we are inside the adjoined room bounds
-      if (camera.position.distanceTo(targetEnterPos) < 2.0) setLanding();
+      if (camera.position.distanceTo(targetEnterPos) < 2.5) {
+        // Synchronize browser history only when we pass through a doorway
+        const nextRoom = useStore.getState().nextRoom;
+        const newPath = Object.keys(pathToRoom).find(k => pathToRoom[k] === nextRoom);
+        if (newPath) router.push(newPath, undefined, { shallow: true });
+        setLanding();
+      }
     }
     else if (transitionPhase === "LANDING") {
       camera.position.lerp(targetPos.current, arrivalSpeed);
       currentLook.current.lerp(targetLook.current, arrivalSpeed);
       camera.lookAt(currentLook.current);
-
       if (camera.position.distanceTo(targetPos.current) < 1.0) finishTransition();
     }
     else {
+      // Phase: IDLE - Smooth landing/breathing
       camera.position.lerp(targetPos.current, 0.1);
       currentLook.current.lerp(targetLook.current, 0.1);
       camera.lookAt(currentLook.current);

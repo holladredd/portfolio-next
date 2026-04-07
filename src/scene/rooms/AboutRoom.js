@@ -6,24 +6,24 @@ import MuseumBench from "../components/MuseumBench";
 
 export default function AboutRoom({ position }) {
   const { previousRoom } = useStore();
+  const safeReturn = (previousRoom || "lobby").toUpperCase();
+
   return (
     <group position={position}>
-      <SolidRoom title="SYSTEM: PROFILE" size={[20, 12, 20]} />
+      <SolidRoom title="FACILITY: ABOUT" size={[30, 12, 30]} />
       <EntranceDoor 
-        position={[0, 0, 9.8]} 
+        position={[0, 0, 15.2]} 
         rotation={[0, Math.PI, 0]} 
-        label={`RETURN TO ${previousRoom.toUpperCase()}`} 
-        onClick={previousRoom} 
+        label={`RETURN TO ${safeReturn}`} 
+        onClick={previousRoom || "lobby"} 
       />
-      <MuseumBench position={[0, 0, -5]} rotation={[0, 0, 0]} />
+      <MuseumBench position={[-8, 0, 0]} rotation={[0, Math.PI / 2, 0]} />
       
-      <mesh position={[0, 4, -9.8]}>
-        <boxGeometry args={[14, 8, 0.2]} />
-        <meshStandardMaterial color="#050505" roughness={0.1} metalness={0.9} />
-      </mesh>
-      <Text position={[-6.5, 7.5, -9.6]} fontSize={0.35} color="#ffffff" anchorX="left" anchorY="top" maxWidth={13} lineHeight={1.4} font="/fonts/Anta-Regular.ttf">
-        {"> ARCHITECT: Folayan Olamide (Dredd)\n> ROLE: Software Engineer\n> MISSION: Building robust interfaces and scalable architectures that bridge the gap between design and functionality.\n\n> STATUS: Seeking highly motivated teams to engineer next-generation platforms.\n\n> PROTOCOLS: [React, Node.js, Next.js, 3D Web, AI Systems]\n\n> SYSTEM_ONLINE_"}
-      </Text>
+      <group position={[0, 4, -14.8]}>
+        <Text fontSize={0.8} color="#38bdf8" font="/fonts/Anta-Regular.ttf">
+          {"> ARCHITECT: Folayan Olamide (Dredd)\n> ROLE: Software Engineer\n> MISSION: Building Immersive Digital Environments"}
+        </Text>
+      </group>
     </group>
   );
 }

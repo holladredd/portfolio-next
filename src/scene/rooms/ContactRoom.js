@@ -1,38 +1,33 @@
 import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
-import SolidRoom from "../components/SolidRoom";
 import Exhibit from "../components/Exhibit";
+import SolidRoom from "../components/SolidRoom";
 import MuseumBench from "../components/MuseumBench";
-
-const connections = [
-  { name: "FACEBOOK", link: "https://web.facebook.com/folayan.olamide.1" },
-  { name: "INSTAGRAM", link: "https://www.instagram.com/dev_dredd" },
-  { name: "WHATSAPP", link: "https://wa.me/+2348160630642" },
-  { name: "GITHUB", link: "https://github.com/holladredd" },
-  { name: "X (TWITTER)", link: "https://x.com/Holla_Dredd" }
-];
+import { contact } from "@/data/content";
 
 export default function ContactRoom({ position }) {
   const { previousRoom } = useStore();
+  const label = (previousRoom || "lobby").toUpperCase();
+
   return (
-    <group position={position} rotation={[0, Math.PI, 0]}>
-      <SolidRoom title="UPLINK: CONTACT" size={[20, 12, 20]} />
+    <group position={position}>
+      <SolidRoom title="UPLINK: CONTACT" size={[30, 12, 30]} />
       <EntranceDoor 
-        position={[0, 0, 9.8]} 
+        position={[0, 0, 15.2]} 
         rotation={[0, Math.PI, 0]} 
-        label={`RETURN TO ${previousRoom.toUpperCase()}`} 
-        onClick={previousRoom} 
+        label={`RETURN TO ${label}`} 
+        onClick={previousRoom || "lobby"} 
       />
-      <MuseumBench position={[0, 0, 4]} rotation={[0, Math.PI, 0]} />
-      <group position={[0, 2, 0]}>
-        {connections.map((c, i) => (
-           <Exhibit key={c.name} position={[(-4 + i * 2), 0, -5]} data={c} type="node" />
-        ))}
-        <Text position={[0, -1.5, -5]} fontSize={0.2} color="#38bdf8" uppercase font="/fonts/Anta-Regular.ttf">
-          SELECT PROTOCOL TO INITIATE UPLINK
-        </Text>
-      </group>
+      
+      <MuseumBench position={[0, 0, 0]} rotation={[0, 0, 0]} />
+
+      {contact.map((c, i) => {
+         const x = -8 + i * 8;
+         return (
+            <Exhibit key={c.platform} position={[x, 1, -10]} data={c} type="node" />
+         );
+      })}
     </group>
   );
 }

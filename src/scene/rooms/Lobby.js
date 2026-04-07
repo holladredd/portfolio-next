@@ -19,15 +19,15 @@ export default function Lobby({ position }) {
             <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.5} />
          </mesh>
          <Float speed={3} rotationIntensity={1} floatIntensity={0.5}>
-           <group position={[0, 3, 0]}>
-             <Text fontSize={0.6} color="#38bdf8" font="/fonts/Anta-Regular.ttf" letterSpacing={0.4} uppercase>
-               DREDD
-             </Text>
-             <mesh rotation={[0, Math.PI / 4, 0]}>
-                <torusGeometry args={[1.5, 0.01, 16, 100]} />
-                <meshBasicMaterial color="#38bdf8" />
-             </mesh>
-           </group>
+            <group position={[0, 3, 0]}>
+              <Text fontSize={0.6} color="#38bdf8" font="/fonts/Anta-Regular.ttf" letterSpacing={0.4} uppercase>
+                DREDD
+              </Text>
+              <mesh rotation={[0, Math.PI / 4, 0]}>
+                 <torusGeometry args={[1.5, 0.01, 16, 100]} />
+                 <meshBasicMaterial color="#38bdf8" />
+              </mesh>
+            </group>
          </Float>
       </group>
 
@@ -43,10 +43,11 @@ export default function Lobby({ position }) {
         </Text>
       </group>
 
-      <EntranceDoor position={[-19.8, 0, 0]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
-      <EntranceDoor position={[19.8, 0, 0]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
-      <EntranceDoor position={[0, 0, -19.8]} label="ABOUT" onClick="about" />
-      <EntranceDoor position={[0, 0, 19.8]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
+      {/* Portals moved 0.2 units 'Proud' of walls (Total 20.2 from center) for interaction visibility */}
+      <EntranceDoor position={[-20.2, 0, 0]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
+      <EntranceDoor position={[20.2, 0, 0]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
+      <EntranceDoor position={[0, 0, -20.2]} label="ABOUT" onClick="about" />
+      <EntranceDoor position={[0, 0, 20.2]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
     </group>
   );
 }

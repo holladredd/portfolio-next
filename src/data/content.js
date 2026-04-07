@@ -33,3 +33,9 @@ export const graphics = [
   { id: 5, name: "Novel Cover", category: "Book Cover", src: "https://i.pinimg.com/236x/4c/f4/1e/4cf41e94030f267aebbb500ea5459a4e.jpg" },
   { id: 6, name: "Sci-Fi Cover", category: "Book Cover", src: "https://i.pinimg.com/236x/87/bb/36/87bb36c2dc2451c5601b69f6c64bf0e9.jpg" }
 ];
+
+export const contact = [
+  { platform: "WhatsApp", link: "https://wa.me/2349012345678", handle: "+234 (0) 901 234 5678" },
+  { platform: "GitHub", link: "https://github.com/holladredd", handle: "@holladredd" },
+  { platform: "LinkedIn", link: "https://linkedin.com/in/holladredd", handle: "Folayan Olamide" }
+];

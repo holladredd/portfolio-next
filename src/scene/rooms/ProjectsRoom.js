@@ -8,13 +8,12 @@ import { projects } from "@/data/content";
 
 export default function ProjectsRoom({ position }) {
   const { previousRoom } = useStore();
-  const returnLabel = previousRoom === "graphics" ? "RETURN TO GALLERY" : "RETURN TO LOBBY";
+  const returnLabel = (previousRoom === "graphics" || previousRoom === "Graphics") ? "RETURN TO GALLERY" : "RETURN TO LOBBY";
 
   return (
     <group position={position}>
       <SolidRoom title="DATA LAB: PROJECTS" size={[20, 12, 40]} />
-      {/* Explicitly targeting lobby to prevent return loops */}
-      <EntranceDoor position={[0, 0, 19.8]} rotation={[0, Math.PI, 0]} label={returnLabel} onClick="lobby" />
+      <EntranceDoor position={[0, 0, 20.2]} rotation={[0, Math.PI, 0]} label={returnLabel} onClick="lobby" />
       
       <MuseumBench position={[-4, 0, 0]} rotation={[0, Math.PI / 2, 0]} />
       <MuseumBench position={[4, 0, 0]} rotation={[0, -Math.PI / 2, 0]} />
@@ -28,7 +27,7 @@ export default function ProjectsRoom({ position }) {
         );
       })}
 
-      <EntranceDoor position={[0, 0, -19.8]} label="GRAPHICS ANNEX" onClick="graphics" />
+      <EntranceDoor position={[0, 0, -20.2]} label="GRAPHICS ANNEX" onClick="graphics" />
     </group>
   );
 }

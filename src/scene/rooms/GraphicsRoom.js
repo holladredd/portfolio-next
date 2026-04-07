@@ -8,10 +8,17 @@ import { graphics } from "@/data/content";
 
 export default function GraphicsRoom({ position }) {
   const { previousRoom } = useStore();
+  const safeReturn = (previousRoom || "projects").toUpperCase();
+
   return (
     <group position={position}>
       <SolidRoom title="CREATIVE ANNEX: GRAPHICS" size={[20, 12, 30]} />
-      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label={`RETURN TO ${previousRoom.toUpperCase()}`} onClick={previousRoom || "projects"} />
+      <EntranceDoor 
+        position={[0, 0, 14.8]} 
+        rotation={[0, Math.PI, 0]} 
+        label={`RETURN TO ${safeReturn}`} 
+        onClick={previousRoom || "projects"} 
+      />
       
       <MuseumBench position={[0, 0, -5]} rotation={[0, 0, 0]} />
 
