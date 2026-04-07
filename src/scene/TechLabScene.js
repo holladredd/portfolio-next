@@ -8,12 +8,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Sky, Stars, Environment } from "@react-three/drei";
-import {
-  Bloom,
-  EffectComposer,
-  Noise,
-  ChromaticAberration,
-} from "@react-three/postprocessing";
 import CameraController from "./CameraController";
 import Lobby from "./rooms/Lobby";
 import ProjectsRoom from "./rooms/ProjectsRoom";
@@ -39,7 +33,7 @@ export default function TechLabScene() {
         dpr={[1, 2]}
       >
         <color attach="background" args={["#020617"]} />
-        {/* <fog attach="fog" args={["#020617", 5, 100]} /> */}
+        <fog attach="fog" args={["#020617", 5, 100]} />
 
         <Suspense fallback={null}>
           {/* 
@@ -66,7 +60,7 @@ export default function TechLabScene() {
             speed={1}
           />
 
-          {/* <ambientLight intensity={0.8} /> */}
+          <ambientLight intensity={0.8} />
 
           {/* Global Spotlights for Texture Depth */}
           <directionalLight position={[10, 20, 10]} intensity={1} castShadow />
@@ -91,21 +85,6 @@ export default function TechLabScene() {
             <ContactRoom position={[0, 0, 35]} />
             <GraphicsRoom position={[-30, 0, -35]} />
           </group>
-
-          {/* 
-            ========================================================
-            4. POST-PROCESSING PIPELINE
-            ========================================================
-            Adds cinematic effects over the WebGL render.
-            Currently using Bloom to make the cyan emissive lights pop!
-          */}
-          <EffectComposer>
-            <Bloom
-              intensity={0.4}
-              luminanceThreshold={0.8}
-              luminanceSmoothing={0.025}
-            />
-          </EffectComposer>
         </Suspense>
       </Canvas>
     </div>
