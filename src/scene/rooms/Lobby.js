@@ -43,11 +43,11 @@ export default function Lobby({ position }) {
         </Text>
       </group>
 
-      {/* Portals moved 0.2 units 'Proud' of walls (Total 20.2 from center) for interaction visibility */}
-      <EntranceDoor position={[-20.2, 0, 0]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
-      <EntranceDoor position={[20.2, 0, 0]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
-      <EntranceDoor position={[0, 0, -20.2]} label="ABOUT" onClick="about" />
-      <EntranceDoor position={[0, 0, 20.2]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
+      {/* Portals moved 19.7 units from center (Interior Proud) */}
+      <EntranceDoor position={[-19.7, 0, 0]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
+      <EntranceDoor position={[19.7, 0, 0]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
+      <EntranceDoor position={[0, 0, -19.7]} label="ABOUT" onClick="about" />
+      <EntranceDoor position={[0, 0, 19.7]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
     </group>
   );
 }

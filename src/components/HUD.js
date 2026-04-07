@@ -1,9 +1,16 @@
 import React from "react";
+import { useRouter } from "next/router";
 import useStore from "@/store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function HUD() {
-  const { currentRoom, previousRoom, isHUDVisible, hudData, closeHUD } = useStore();
+  const router = useRouter();
+  const { currentRoom, previousRoom, isHUDVisible, hudData, closeHUD, transitionPhase } = useStore();
+
+  const handleReturn = () => {
+    if (transitionPhase !== "IDLE") return;
+    router.push("/");
+  };
 
   const getButtonLabel = (data) => {
     if (data?.link?.includes("github.com")) return "VIEW REPOSITORY";
@@ -16,8 +23,9 @@ export default function HUD() {
 
   return (
     <>
-      <div className="fixed top-6 left-6 z-50 pointer-events-none">
-        <div className="bg-black/40 backdrop-blur-md border-l-2 border-blue-400 p-3 flex flex-col gap-1">
+      {/* Location Terminal & Return Bridge */}
+      <div className="fixed top-6 left-6 z-50 flex items-start gap-4">
+        <div className="bg-black/40 backdrop-blur-md border-l-2 border-blue-400 p-3 flex flex-col gap-1 pointer-events-none">
           <div className="text-[10px] text-blue-400 font-mono tracking-widest uppercase">Location Terminal</div>
           <motion.div 
             key={safeCurrentRoom}
@@ -31,6 +39,21 @@ export default function HUD() {
             PREV_ADDR: [ {safePrevRoom} ]
           </div>
         </div>
+
+        {/* Dynamic Return Button: Only shown if not in lobby */}
+        <AnimatePresence>
+          {currentRoom !== "lobby" && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={handleReturn}
+              className="bg-blue-600 hover:bg-blue-500 text-white font-anta text-[10px] tracking-[0.2em] px-4 py-3 uppercase transition-colors border-l-2 border-white/20"
+            >
+              RETURN TO HUB
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
 
       <AnimatePresence>

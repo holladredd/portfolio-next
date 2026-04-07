@@ -7,7 +7,7 @@ import useStore from "@/store/useStore";
 const roomCoordinates = {
   lobby: { pos: [0, 2, 12], lookAt: [0, 1, 0] },
   projects: { pos: [-30, 2, 0], lookAt: [-30, 1, -10] },
-  graphics: { pos: [-30, 2, -45], lookAt: [-30, 1, -55] },
+  graphics: { pos: [-30, 2, -35], lookAt: [-30, 1, -45] },
   skills: { pos: [35, 2, 0], lookAt: [35, 1, -10] },
   about: { pos: [0, 2, -35], lookAt: [0, 1, -45] },
   contact: { pos: [0, 2, 35], lookAt: [0, 1, 45] }
@@ -36,7 +36,6 @@ export default function CameraController() {
     finishTransition 
   } = useStore();
   
-  // URL to 3D State Sync: Enforce 100% address bar consistency
   useEffect(() => {
     const targetRoom = pathToRoom[router.pathname] || "lobby";
     if (targetRoom !== currentRoom && transitionPhase === "IDLE") {
@@ -50,7 +49,6 @@ export default function CameraController() {
   const targetLook = useRef(new THREE.Vector3(...currentLevelConfig.lookAt));
   const currentLook = useRef(new THREE.Vector3(...currentLevelConfig.lookAt));
 
-  // Immediate state synchronization in the render pass
   targetPos.current.set(...currentLevelConfig.pos);
   if (customLookTarget) {
     targetLook.current.set(...customLookTarget);
@@ -59,7 +57,6 @@ export default function CameraController() {
   }
 
   useFrame((state) => {
-    // KINETIC VELOCITY constants (Super Fast)
     const rotateSpeed = 0.8; 
     const walkSpeed = 0.7;   
     const arrivalSpeed = 0.8; 
@@ -75,7 +72,6 @@ export default function CameraController() {
       camera.position.lerp(targetEnterPos, walkSpeed); 
       
       if (camera.position.distanceTo(targetEnterPos) < 2.5) {
-        // Synchronize browser history only when we pass through a doorway
         const nextRoom = useStore.getState().nextRoom;
         const newPath = Object.keys(pathToRoom).find(k => pathToRoom[k] === nextRoom);
         if (newPath) router.push(newPath, undefined, { shallow: true });
@@ -89,7 +85,6 @@ export default function CameraController() {
       if (camera.position.distanceTo(targetPos.current) < 1.0) finishTransition();
     }
     else {
-      // Phase: IDLE - Smooth landing/breathing
       camera.position.lerp(targetPos.current, 0.1);
       currentLook.current.lerp(targetLook.current, 0.1);
       camera.lookAt(currentLook.current);

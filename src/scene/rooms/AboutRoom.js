@@ -12,7 +12,7 @@ export default function AboutRoom({ position }) {
     <group position={position}>
       <SolidRoom title="FACILITY: ABOUT" size={[30, 12, 30]} />
       <EntranceDoor 
-        position={[0, 0, 15.2]} 
+        position={[0, 0, 14.7]} 
         rotation={[0, Math.PI, 0]} 
         label={`RETURN TO ${safeReturn}`} 
         onClick={previousRoom || "lobby"} 

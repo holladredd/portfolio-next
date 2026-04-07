@@ -14,7 +14,7 @@ export default function ContactRoom({ position }) {
     <group position={position}>
       <SolidRoom title="UPLINK: CONTACT" size={[30, 12, 30]} />
       <EntranceDoor 
-        position={[0, 0, 15.2]} 
+        position={[0, 0, 14.7]} 
         rotation={[0, Math.PI, 0]} 
         label={`RETURN TO ${label}`} 
         onClick={previousRoom || "lobby"} 

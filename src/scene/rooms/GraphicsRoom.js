@@ -14,7 +14,7 @@ export default function GraphicsRoom({ position }) {
     <group position={position}>
       <SolidRoom title="CREATIVE ANNEX: GRAPHICS" size={[20, 12, 30]} />
       <EntranceDoor 
-        position={[0, 0, 14.8]} 
+        position={[0, 0, 14.7]} 
         rotation={[0, Math.PI, 0]} 
         label={`RETURN TO ${safeReturn}`} 
         onClick={previousRoom || "projects"} 

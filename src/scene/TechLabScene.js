@@ -1,7 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import { EffectComposer, Bloom, Noise, ChromaticAberration } from "@react-three/postprocessing";
-import { Environment, MeshReflectorMaterial } from "@react-three/drei";
+import { Sky, Stars, Environment, Bloom, EffectComposer, Noise, ChromaticAberration } from "@react-three/postprocessing";
 import CameraController from "./CameraController";
 import Lobby from "./rooms/Lobby";
 import ProjectsRoom from "./rooms/ProjectsRoom";
@@ -9,58 +8,47 @@ import SkillsRoom from "./rooms/SkillsRoom";
 import AboutRoom from "./rooms/AboutRoom";
 import ContactRoom from "./rooms/ContactRoom";
 import GraphicsRoom from "./rooms/GraphicsRoom";
-import AmbientDust from "./components/AmbientDust";
 
 export default function TechLabScene() {
   return (
-    <div className="fixed inset-0 bg-black">
-      <Canvas
-        shadows
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: false }}
-        camera={{ position: [0, 2, 12], fov: 60 }}
+    <div className="w-full h-full absolute inset-0">
+      <Canvas 
+        shadows 
+        camera={{ position: [0, 2, 12], fov: 75 }}
+        gl={{ antialias: true, stencil: false, depth: true }}
+        dpr={[1, 2]} 
       >
-        <color attach="background" args={["#050505"]} />
-        <fog attach="fog" args={["#050505", 5, 100]} />
-
+        <color attach="background" args={["#020617"]} />
+        <fog attach="fog" args={["#020617", 5, 100]} />
+        
         <Suspense fallback={null}>
-          <Environment preset="city" />
-          <ambientLight intensity={0.15} />
+          <Environment preset="night" />
+          <Sky distance={450000} sunPosition={[0, -1, 0]} inclination={0} azimuth={0.25} />
+          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
           
-          <AmbientDust />
-
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]}>
-            <planeGeometry args={[220, 220]} />
-            <MeshReflectorMaterial
-              blur={[300, 100]}
-              resolution={1024}
-              mixBlur={1}
-              mixStrength={20}
-              roughness={1}
-              depthScale={1}
-              minDepthThreshold={0.5}
-              maxDepthThreshold={1}
-              color="#050505"
-              metalness={0.5}
-            />
-          </mesh>
+          <ambientLight intensity={0.2} />
+          <pointLight position={[0, 10, 0]} intensity={1.5} color="#38bdf8" />
 
           <CameraController />
 
           <group>
-            {/* Adjoined Facility Map: Seamless Structural Alignment */}
+            {/* Museum HUB (Lobby) - 40x14x40 */}
             <Lobby position={[0, 0, 0]} />
-            <ProjectsRoom position={[-30, 0, 0]} />
-            <SkillsRoom position={[35, 0, 0]} />
-            <AboutRoom position={[0, 0, -35]} />
-            <ContactRoom position={[0, 0, 35]} />
-            <GraphicsRoom position={[-30, 0, -45]} />
+            
+            {/* Gallery Wings - Harmonized to Lobby Bounds */}
+            <ProjectsRoom position={[-30, 0, 0]} />       {/* Adjoined to -20 X */}
+            <SkillsRoom position={[35, 0, 0]} />         {/* Adjoined to +20 X */}
+            <AboutRoom position={[0, 0, -35]} />         {/* Adjoined to -20 Z */}
+            <ContactRoom position={[0, 0, 35]} />        {/* Adjoined to +20 Z */}
+            
+            {/* Creative Annex - Adjoined to Projects Boundary */}
+            <GraphicsRoom position={[-30, 0, -35]} />    {/* Adjoined to -20 Z of Projects Hall */}
           </group>
 
-          <EffectComposer disableNormalPass>
-            <Bloom luminanceThreshold={0.9} mipmapBlur intensity={0.5} radius={0.3} />
-            <Noise opacity={0.01} />
-            <ChromaticAberration offset={[0.0002, 0.0002]} />
+          <EffectComposer>
+            <Bloom intensity={0.5} luminanceThreshold={0.9} luminanceSmoothing={0.025} />
+            <Noise opacity={0.02} />
+            <ChromaticAberration offset={[0.0005, 0.0005]} />
           </EffectComposer>
         </Suspense>
       </Canvas>
