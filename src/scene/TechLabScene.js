@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import { Sky, Stars, Environment, Bloom, EffectComposer, Noise, ChromaticAberration } from "@react-three/postprocessing";
+import { Sky, Stars, Environment } from "@react-three/drei";
+import { Bloom, EffectComposer, Noise, ChromaticAberration } from "@react-three/postprocessing";
 import CameraController from "./CameraController";
 import Lobby from "./rooms/Lobby";
 import ProjectsRoom from "./rooms/ProjectsRoom";
@@ -36,13 +37,13 @@ export default function TechLabScene() {
             <Lobby position={[0, 0, 0]} />
             
             {/* Gallery Wings - Harmonized to Lobby Bounds */}
-            <ProjectsRoom position={[-30, 0, 0]} />       {/* Adjoined to -20 X */}
-            <SkillsRoom position={[35, 0, 0]} />         {/* Adjoined to +20 X */}
-            <AboutRoom position={[0, 0, -35]} />         {/* Adjoined to -20 Z */}
-            <ContactRoom position={[0, 0, 35]} />        {/* Adjoined to +20 Z */}
+            <ProjectsRoom position={[-30, 0, 0]} />       
+            <SkillsRoom position={[35, 0, 0]} />         
+            <AboutRoom position={[0, 0, -35]} />         
+            <ContactRoom position={[0, 0, 35]} />        
             
             {/* Creative Annex - Adjoined to Projects Boundary */}
-            <GraphicsRoom position={[-30, 0, -35]} />    {/* Adjoined to -20 Z of Projects Hall */}
+            <GraphicsRoom position={[-30, 0, -35]} />    
           </group>
 
           <EffectComposer>
