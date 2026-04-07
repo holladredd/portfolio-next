@@ -23,33 +23,32 @@ export default function TechLabScene() {
         <fog attach="fog" args={["#020617", 5, 100]} />
         
         <Suspense fallback={null}>
-          <Environment preset="night" />
+          <Environment preset="night" environmentIntensity={1.5} />
           <Sky distance={450000} sunPosition={[0, -1, 0]} inclination={0} azimuth={0.25} />
           <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
           
-          <ambientLight intensity={0.2} />
-          <pointLight position={[0, 10, 0]} intensity={1.5} color="#38bdf8" />
+          <ambientLight intensity={0.8} />
+          
+          {/* Global Spotlights for Texture Depth */}
+          <directionalLight position={[10, 20, 10]} intensity={1} castShadow />
+          <pointLight position={[0, 10, 0]} intensity={2} color="#38bdf8" />
 
           <CameraController />
 
           <group>
-            {/* Museum HUB (Lobby) - 40x14x40 */}
+            {/* Museum HUB (Lobby) */}
             <Lobby position={[0, 0, 0]} />
-            
-            {/* Gallery Wings - Harmonized to Lobby Bounds */}
             <ProjectsRoom position={[-30, 0, 0]} />       
             <SkillsRoom position={[35, 0, 0]} />         
             <AboutRoom position={[0, 0, -35]} />         
             <ContactRoom position={[0, 0, 35]} />        
-            
-            {/* Creative Annex - Adjoined to Projects Boundary */}
             <GraphicsRoom position={[-30, 0, -35]} />    
           </group>
 
           <EffectComposer>
-            <Bloom intensity={0.5} luminanceThreshold={0.9} luminanceSmoothing={0.025} />
-            <Noise opacity={0.02} />
-            <ChromaticAberration offset={[0.0005, 0.0005]} />
+            <Bloom intensity={0.8} luminanceThreshold={0.9} luminanceSmoothing={0.025} />
+            <Noise opacity={0.03} />
+            <ChromaticAberration offset={[0.0008, 0.0008]} />
           </EffectComposer>
         </Suspense>
       </Canvas>
