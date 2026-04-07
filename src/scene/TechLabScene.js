@@ -9,6 +9,7 @@ import SkillsRoom from "./rooms/SkillsRoom";
 import AboutRoom from "./rooms/AboutRoom";
 import ContactRoom from "./rooms/ContactRoom";
 import GraphicsRoom from "./rooms/GraphicsRoom";
+import AmbientDust from "./components/AmbientDust";
 
 export default function TechLabScene() {
   return (
@@ -20,15 +21,14 @@ export default function TechLabScene() {
         camera={{ position: [0, 2, 10], fov: 60 }}
       >
         <color attach="background" args={["#050505"]} />
-        <fog attach="fog" args={["#050505", 5, 45]} />
+        <fog attach="fog" args={["#050505", 5, 40]} />
 
         <Suspense fallback={null}>
           <Environment preset="city" />
+          <ambientLight intensity={0.15} />
           
-          <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" castShadow />
-          
-          {/* Universal Mirror Overlay for Refined Vertical Depth */}
+          <AmbientDust />
+
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]}>
             <planeGeometry args={[100, 100]} />
             <MeshReflectorMaterial
@@ -39,7 +39,7 @@ export default function TechLabScene() {
               roughness={1}
               depthScale={1}
               minDepthThreshold={0.5}
-              maxDepthThreshold={1.2}
+              maxDepthThreshold={1}
               color="#050505"
               metalness={0.5}
             />
@@ -47,7 +47,6 @@ export default function TechLabScene() {
 
           <CameraController />
 
-          {/* Compact Campus Layout */}
           <group>
             <Lobby position={[0, 0, 0]} />
             <ProjectsRoom position={[-25, 0, -5]} />
@@ -58,8 +57,8 @@ export default function TechLabScene() {
           </group>
 
           <EffectComposer disableNormalPass>
-            <Bloom luminanceThreshold={0.9} mipmapBlur intensity={0.5} radius={0.4} />
-            <Noise opacity={0.01} />
+            <Bloom luminanceThreshold={0.9} mipmapBlur intensity={0.5} radius={0.3} />
+            <Noise opacity={0.015} />
           </EffectComposer>
         </Suspense>
       </Canvas>

@@ -10,7 +10,7 @@ export default function Lobby({ position }) {
     <group position={position}>
       <SolidRoom title="MUSEUM CORE: LOBBY" size={[32, 14, 32]} />
       
-      {/* Central Power Pillar & Facility Map */}
+      {/* Central Power Pillar & Information Hub */}
       <group position={[0, 0, 0]}>
          <mesh position={[0, 0.4, 0]}>
             <boxGeometry args={[4, 0.8, 4]} />
@@ -28,11 +28,11 @@ export default function Lobby({ position }) {
          </Float>
       </group>
 
-      {/* Decorative Museum Furniture (Benches) */}
+      {/* Museum Benches */}
       <MuseumBench position={[-8, 0, 8]} rotation={[0, Math.PI / 4, 0]} />
       <MuseumBench position={[8, 0, 8]} rotation={[0, -Math.PI / 4, 0]} />
 
-      {/* Wall Inscriptions */}
+      {/* Main Wall Inscription */}
       <group position={[0, 4.5, -15.5]}>
         <Text fontSize={1.5} color="#ffffff" anchorX="center" anchorY="middle" font="/fonts/Anta-Regular.ttf" uppercase>
           FOLAYAN OLAMIDE
@@ -42,6 +42,7 @@ export default function Lobby({ position }) {
         </Text>
       </group>
 
+      {/* Navigation Portals */}
       <EntranceDoor position={[-15.8, 0, -5]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
       <EntranceDoor position={[15.8, 0, -5]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
       <EntranceDoor position={[0, 0, -15.8]} label="ABOUT" onClick="about" />
