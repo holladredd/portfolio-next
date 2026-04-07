@@ -46,9 +46,7 @@ export default function TechLabScene() {
           </group>
 
           <EffectComposer>
-            <Bloom intensity={0.8} luminanceThreshold={0.9} luminanceSmoothing={0.025} />
-            <Noise opacity={0.03} />
-            <ChromaticAberration offset={[0.0008, 0.0008]} />
+            <Bloom intensity={0.4} luminanceThreshold={0.8} luminanceSmoothing={0.025} />
           </EffectComposer>
         </Suspense>
       </Canvas>
