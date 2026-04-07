@@ -30,8 +30,18 @@ export default function EntranceDoor({ position, rotation = [0, 0, 0], label, on
          <meshBasicMaterial transparent opacity={0} color="#38bdf8" />
       </mesh>
       
-      {/* The Visual Door Frame and Dark Portal Surface have been removed. */}
-      {/* This renders the portal completely transparent against the wall. */}
+      {/* Architectural Entrance Frame (Trim) */}
+      <mesh position={[0, 3, 0.05]}>
+         <boxGeometry args={[4.4, 6.4, 0.1]} />
+         <meshStandardMaterial color="#000000" metalness={0} roughness={1} />
+      </mesh>
+      
+      {/* The Hallway Void (Simulating depth leading to next room) */}
+      <mesh position={[0, 3, 0.1]}>
+        <boxGeometry args={[4, 6, 0.15]} />
+        {/* Extremely dark material so it looks like an unlit hallway */}
+        <meshBasicMaterial color="#010101" />
+      </mesh>
     </group>
   );
 }
