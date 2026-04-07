@@ -1,4 +1,11 @@
+/**
+ * MuseumBench Component
+ * 
+ * An aesthetic, physical prop that enhances the realistic scale
+ * and atmosphere of the museum halls. Represents the brutalist architecture style.
+ */
 import React from "react";
+import { Box } from "@react-three/drei";
 
 export default function MuseumBench({ position, rotation }) {
   return (

@@ -1,3 +1,10 @@
+/**
+ * Lobby Component
+ * 
+ * The central hub of the museum. It acts as the geographic center [0,0,0],
+ * connecting all other wings together via EntranceDoors. Contains introductory
+ * 3D text and central architectural elements.
+ */
 import { Text, Float } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
@@ -7,8 +14,16 @@ import MuseumBench from "../components/MuseumBench";
 export default function Lobby({ position }) {
   return (
     <group position={position}>
+      {/* Primary Structural Hull */}
       <SolidRoom title="LOBBY" size={[40, 14, 40]} />
 
+      {/* 
+        ===================================================================
+        SECTION 1: THE CENTRAL PENTAGON HUB & 3D TEXT
+        ===================================================================
+        Floats the central "DREDD" logo in the middle of the room
+        on top of a glowing cybernetic pedestal.
+      */}
       <group position={[0, 0, 0]}>
         <mesh position={[0, 0.6, 0]}>
           <boxGeometry args={[4, 1.2, 2]} />
@@ -41,6 +56,13 @@ export default function Lobby({ position }) {
         </Float>
       </group>
 
+      {/* 
+        ===================================================================
+        SECTION 2: AESTHETIC PROPS & IDENTITY
+        ===================================================================
+        Scatters geometric benches for realism and displays the primary 
+        greeting text (Developer Identity) on the wall.
+      */}
       <MuseumBench position={[-12, 0, 12]} rotation={[0, Math.PI / 4, 0]} />
       <MuseumBench position={[12, 0, 12]} rotation={[0, -Math.PI / 4, 0]} />
 
@@ -69,6 +91,13 @@ export default function Lobby({ position }) {
         </Text>
       </group>
 
+      {/* 
+        ===================================================================
+        SECTION 3: PORTAL NETWORK (URL ROUTING)
+        ===================================================================
+        Positions the invisible kinematic hitboxes along the wall bounds.
+        Clicking these initiates the camera teleport sequence to the mapped URL.
+      */}
       {/* Portals moved 19.7 units from center (Interior Proud) */}
       <EntranceDoor
         position={[-19.7, 0, 0]}

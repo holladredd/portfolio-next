@@ -1,3 +1,10 @@
+/**
+ * EntranceDoor Component
+ * 
+ * Represents an interactive archway portal within the museum.
+ * It uses an invisible hitbox to handle high-speed 'onPointerDown' events,
+ * triggering the kinetic camera transition to a new museum wing (URL route).
+ */
 import useStore from "@/store/useStore";
 import * as THREE from "three";
 

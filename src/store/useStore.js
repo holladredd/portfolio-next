@@ -1,3 +1,10 @@
+/**
+ * useStore - Zustand State Machine
+ * 
+ * Centralized memory bank for the 3D portfolio. It coordinates the kinetic
+ * transition phases (IDLE, FACING, ENTERING, LANDING), tracks previous room history
+ * for intelligent breadcrumbing, and manages active exhibit inspection data.
+ */
 import { create } from "zustand";
 import * as THREE from "three";
 

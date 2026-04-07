@@ -1,3 +1,10 @@
+/**
+ * CameraController Component
+ * 
+ * The 'Kinetic Director' of the museum. It lives directly inside the 60fps render loop
+ * and synchronizes the 3D camera coordinates with the Next.js URL state, guaranteeing
+ * zero-latency, bounce-free transitions between rooms.
+ */
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import { useRouter } from "next/router";

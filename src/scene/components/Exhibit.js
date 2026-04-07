@@ -1,3 +1,10 @@
+/**
+ * Exhibit Component
+ * 
+ * Represents an interactive portfolio piece or skill node.
+ * Features hover animations and click interactions that trigger the HUD
+ * to display detailed information about the selected exhibit.
+ */
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text, Float } from "@react-three/drei";

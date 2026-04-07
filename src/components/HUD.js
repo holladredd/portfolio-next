@@ -1,6 +1,13 @@
 import React from "react";
 import { useRouter } from "next/router";
 import useStore from "@/store/useStore";
+/**
+ * HUD Component
+ * 
+ * The 2D visual overlay handling user interface interactions.
+ * Replaces the traditional Navbar to maintain 3D immersion, providing a
+ * context-aware "RETURN TO HUB" bridge and responsive exhibit data panels.
+ */
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function HUD() {
@@ -23,7 +30,14 @@ export default function HUD() {
 
   return (
     <>
-      {/* Location Terminal & Return Bridge */}
+      {/* 
+        ========================================================================
+        SECTION 1: LOCATION TERMINAL & RETURN BRIDGE
+        ========================================================================
+        Displays the current user location within the 3D museum wing.
+        It also handles the dynamic 'RETURN TO HUB' button that appears
+        in non-lobby rooms, warping the camera back to origin.
+      */}
       <div className="fixed top-6 left-6 z-50 flex items-start gap-4">
         <div className="bg-black/40 backdrop-blur-md border-l-2 border-blue-400 p-3 flex flex-col gap-1 pointer-events-none">
           <div className="text-[10px] text-blue-400 font-mono tracking-widest uppercase">Location Terminal</div>
@@ -56,6 +70,14 @@ export default function HUD() {
         </AnimatePresence>
       </div>
 
+      {/* 
+        ========================================================================
+        SECTION 2: EXHIBIT INSPECTION PANEL
+        ========================================================================
+        This sidebar smoothly slides in from the right when the user clicks 
+        an interactive 3D exhibit node. It parses the global 'hudData' store
+        and renders descriptive text and call-to-action buttons.
+      */}
       <AnimatePresence>
         {isHUDVisible && (
           <motion.div
