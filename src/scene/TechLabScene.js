@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import { EffectComposer, Bloom, Noise } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Noise, ChromaticAberration } from "@react-three/postprocessing";
 import { Environment, MeshReflectorMaterial } from "@react-three/drei";
 import CameraController from "./CameraController";
 import Lobby from "./rooms/Lobby";
@@ -21,16 +21,16 @@ export default function TechLabScene() {
         camera={{ position: [0, 2, 12], fov: 60 }}
       >
         <color attach="background" args={["#050505"]} />
-        <fog attach="fog" args={["#050505", 5, 80]} />
+        <fog attach="fog" args={["#050505", 5, 100]} />
 
         <Suspense fallback={null}>
           <Environment preset="city" />
           <ambientLight intensity={0.15} />
-
+          
           <AmbientDust />
 
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]}>
-            <planeGeometry args={[200, 200]} />
+            <planeGeometry args={[220, 220]} />
             <MeshReflectorMaterial
               blur={[300, 100]}
               resolution={1024}
@@ -48,23 +48,19 @@ export default function TechLabScene() {
           <CameraController />
 
           <group>
-            {/* Reverting to Original Expanded Positions */}
+            {/* Adjoined Facility Map: Seamless Structural Alignment */}
             <Lobby position={[0, 0, 0]} />
-            <ProjectsRoom position={[-40, 0, 0]} />
-            <SkillsRoom position={[40, 0, 0]} />
-            <AboutRoom position={[0, 0, -40]} />
-            <ContactRoom position={[0, 0, 40]} />
-            <GraphicsRoom position={[-40, 0, -45]} />
+            <ProjectsRoom position={[-30, 0, 0]} />
+            <SkillsRoom position={[35, 0, 0]} />
+            <AboutRoom position={[0, 0, -35]} />
+            <ContactRoom position={[0, 0, 35]} />
+            <GraphicsRoom position={[-30, 0, -45]} />
           </group>
 
           <EffectComposer disableNormalPass>
-            <Bloom
-              luminanceThreshold={0.9}
-              mipmapBlur
-              intensity={0.5}
-              radius={0.3}
-            />
-            <Noise opacity={0.015} />
+            <Bloom luminanceThreshold={0.9} mipmapBlur intensity={0.5} radius={0.3} />
+            <Noise opacity={0.01} />
+            <ChromaticAberration offset={[0.0002, 0.0002]} />
           </EffectComposer>
         </Suspense>
       </Canvas>

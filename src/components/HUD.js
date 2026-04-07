@@ -11,16 +11,24 @@ export default function HUD() {
     return "ACCESS DIGITAL ASSET";
   };
 
+  const safeCurrentRoom = (currentRoom || "SYNCING").replace("_", " ");
+  const safePrevRoom = (previousRoom || "CORE").toUpperCase();
+
   return (
     <>
       <div className="fixed top-6 left-6 z-50 pointer-events-none">
         <div className="bg-black/40 backdrop-blur-md border-l-2 border-blue-400 p-3 flex flex-col gap-1">
           <div className="text-[10px] text-blue-400 font-mono tracking-widest uppercase">Location Terminal</div>
-          <div className="text-white font-anta text-lg tracking-wider uppercase">
-            {currentRoom.replace("_", " ")}
-          </div>
+          <motion.div 
+            key={safeCurrentRoom}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-white font-anta text-lg tracking-wider uppercase"
+          >
+            {safeCurrentRoom}
+          </motion.div>
           <div className="text-[10px] text-white/50 font-mono italic">
-            PREV_ADDR: [ {previousRoom.toUpperCase()} ]
+            PREV_ADDR: [ {safePrevRoom} ]
           </div>
         </div>
       </div>
@@ -31,7 +39,7 @@ export default function HUD() {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
-            className="fixed inset-y-0 right-0 w-full md:w-[450px] bg-black/90 backdrop-blur-xl border-l border-white/10 z-[100] p-8 flex flex-col justify-center"
+            className="fixed inset-y-0 right-0 w-full md:w-[450px] bg-black/90 backdrop-blur-xl border-l border-white/10 z-[100] p-8 flex flex-col justify-center px-10"
           >
             <button onClick={closeHUD} className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
               [ CLOSE_X ]
