@@ -3,6 +3,7 @@ import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
 import Exhibit from "../components/Exhibit";
 import SolidRoom from "../components/SolidRoom";
+import MuseumBench from "../components/MuseumBench";
 import { graphics } from "@/data/content";
 
 export default function GraphicsRoom({ position }) {
@@ -10,8 +11,10 @@ export default function GraphicsRoom({ position }) {
   return (
     <group position={position}>
       <SolidRoom title="CREATIVE ANNEX: GRAPHICS" size={[20, 12, 30]} />
-      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label={`RETURN TO ${previousRoom.toUpperCase()}`} onClick="projects" />
+      <EntranceDoor position={[0, 0, 14.8]} rotation={[0, Math.PI, 0]} label={`RETURN TO ${previousRoom.toUpperCase()}`} onClick={previousRoom || "projects"} />
       
+      <MuseumBench position={[0, 0, -5]} rotation={[0, 0, 0]} />
+
       {graphics.map((g, i) => {
         const row = i % 2 === 0 ? -8 : 8;
         const z = -10 + Math.floor(i / 2) * 8;

@@ -2,66 +2,52 @@ import { Text, Float } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
 import SolidRoom from "../components/SolidRoom";
+import MuseumBench from "../components/MuseumBench";
 
 export default function Lobby({ position }) {
-  const { startTransition } = useStore();
-
   return (
     <group position={position}>
       <SolidRoom title="MUSEUM CORE: LOBBY" size={[32, 14, 32]} />
       
-      {/* Central Power Pillar & Information Hub */}
+      {/* Central Reception Hub & Holographic Logo */}
       <group position={[0, 0, 0]}>
-         <mesh position={[0, 0.4, 0]}>
-            <boxGeometry args={[4, 0.8, 4]} />
-            <meshStandardMaterial color="#0a0a0a" roughness={0.1} metalness={0.9} />
+         <mesh position={[0, 0.6, 0]}>
+            <boxGeometry args={[4, 1.2, 2]} />
+            <meshStandardMaterial color="#0a0a0a" roughness={0.05} metalness={1} />
          </mesh>
-         <mesh position={[0, 5, 0]}>
-            <cylinderGeometry args={[1.5, 1.5, 9, 32]} />
-            <meshPhysicalMaterial color="#0a0a0a" metalness={1} roughness={0.05} transparent opacity={0.4} />
+         <mesh position={[0, 1.2, 0]}>
+            <boxGeometry args={[4, 0.05, 2.1]} />
+            <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.5} />
          </mesh>
          <Float speed={3} rotationIntensity={1} floatIntensity={0.5}>
-           <mesh position={[0, 5, 0]} rotation={[0, Math.PI / 4, 0]}>
-              <cylinderGeometry args={[1.2, 1.2, 9.1, 4]} />
-              <meshPhysicalMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.8} wireframe />
-           </mesh>
+           <group position={[0, 3, 0]}>
+             <Text fontSize={0.6} color="#38bdf8" font="/fonts/Anta-Regular.ttf" letterSpacing={0.4} uppercase>
+               DREDD
+             </Text>
+             <mesh rotation={[0, Math.PI / 4, 0]}>
+                <torusGeometry args={[1.5, 0.01, 16, 100]} />
+                <meshBasicMaterial color="#38bdf8" />
+             </mesh>
+           </group>
          </Float>
       </group>
 
-      {/* Museum Benches */}
-      <MuseumBench position={[-8, 0, 8]} rotation={[0, Math.PI / 4, 0]} />
-      <MuseumBench position={[8, 0, 8]} rotation={[0, -Math.PI / 4, 0]} />
+      <MuseumBench position={[-8, 0, 10]} rotation={[0, Math.PI / 4, 0]} />
+      <MuseumBench position={[8, 0, 10]} rotation={[0, -Math.PI / 4, 0]} />
 
-      {/* Main Wall Inscription */}
-      <group position={[0, 4.5, -15.5]}>
-        <Text fontSize={1.5} color="#ffffff" anchorX="center" anchorY="middle" font="/fonts/Anta-Regular.ttf" uppercase>
+      <group position={[0, 5, -15.5]}>
+        <Text fontSize={1.8} color="#ffffff" anchorX="center" anchorY="middle" font="/fonts/Anta-Regular.ttf" uppercase opacity={0.8} transparent>
           FOLAYAN OLAMIDE
         </Text>
-        <Text position={[0, -1.2, 0]} fontSize={0.4} color="#38bdf8" uppercase letterSpacing={0.4} font="/fonts/Anta-Regular.ttf">
+        <Text position={[0, -1.4, 0]} fontSize={0.4} color="#38bdf8" uppercase letterSpacing={0.4} font="/fonts/Anta-Regular.ttf">
           SOFTWARE ENGINEER
         </Text>
       </group>
 
-      {/* Navigation Portals */}
       <EntranceDoor position={[-15.8, 0, -5]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
       <EntranceDoor position={[15.8, 0, -5]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
       <EntranceDoor position={[0, 0, -15.8]} label="ABOUT" onClick="about" />
       <EntranceDoor position={[0, 0, 15.8]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
-    </group>
-  );
-}
-
-function MuseumBench({ position, rotation }) {
-  return (
-    <group position={position} rotation={rotation}>
-      <mesh position={[0, 0.4, 0]}>
-        <boxGeometry args={[4, 0.8, 1.5]} />
-        <meshStandardMaterial color="#0a0a0a" roughness={0.1} metalness={0.9} />
-      </mesh>
-      <mesh position={[0, 0.9, 0]}>
-        <boxGeometry args={[4, 0.1, 1.5]} />
-        <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.2} transparent opacity={0.3} />
-      </mesh>
     </group>
   );
 }

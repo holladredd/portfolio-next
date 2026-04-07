@@ -2,6 +2,7 @@ import { Text } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
 import SolidRoom from "../components/SolidRoom";
+import MuseumBench from "../components/MuseumBench";
 
 export default function AboutRoom({ position }) {
   const { previousRoom } = useStore();
@@ -14,6 +15,8 @@ export default function AboutRoom({ position }) {
         label={`RETURN TO ${previousRoom.toUpperCase()}`} 
         onClick={previousRoom} 
       />
+      <MuseumBench position={[0, 0, -5]} rotation={[0, 0, 0]} />
+      
       <mesh position={[0, 4, -9.8]}>
         <boxGeometry args={[14, 8, 0.2]} />
         <meshStandardMaterial color="#050505" roughness={0.1} metalness={0.9} />

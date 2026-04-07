@@ -1,62 +1,44 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import useStore from "@/store/useStore";
-import { Menu, X, Home, User, Briefcase, Mail } from "lucide-react";
-import ThemeToggle from "@/ui/ThemeToggle";
 
 const navItems = [
-  { id: 1, text: "Home", link: "/", icon: <Home size={20} /> },
-  { id: 2, text: "About", link: "/about", icon: <User size={20} /> },
-  { id: 3, text: "Project", link: "/project", icon: <Briefcase size={20} /> },
-  { id: 4, text: "Contact", link: "/contact", icon: <Mail size={20} /> },
+  { label: "Home", id: "lobby", doorPos: [0, 0, 0] },
+  { label: "Projects", id: "projects", doorPos: [-15.8, 0, -5] },
+  { label: "Skills", id: "skills", doorPos: [15.8, 0, -5] },
+  { label: "About", id: "about", doorPos: [0, 0, -15.8] },
+  { label: "Contact", id: "contact", doorPos: [0, 0, 15.8] }
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const { currentRoom, startTransition, transitionPhase } = useStore();
+  const isTransitioning = transitionPhase !== "IDLE";
 
-  const { mode } = useStore();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handleNavClick = (item) => {
+    if (isTransitioning || currentRoom === item.id) return;
+    startTransition(item.id, item.doorPos);
+  };
 
   return (
-    <AnimatePresence>
-      {mode === "explore" && (
-        <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.8 }}
-          className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6"
-        >
-          <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-accent transition-transform group-hover:scale-110">
-                <img src="/img/hd.png" alt="Logo" className="w-full h-full object-cover" />
-              </div>
-              <span className="font-squids text-2xl tracking-tighter text-white">
-                DREDD
-              </span>
-            </Link>
-            <div className="hidden md:flex items-center gap-8 glass rounded-full px-8 py-2">
-              {navItems.map((item) => (
-                <Link key={item.id} href={item.link} className="flex items-center gap-2 text-sm font-anta uppercase tracking-widest hover:text-accent transition-colors">
-                  {item.text}
-                </Link>
-              ))}
-              <div className="h-4 w-[1px] bg-white/20" />
-              <ThemeToggle />
-            </div>
-          </div>
-        </motion.nav>
-      )}
-    </AnimatePresence>
+    <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-10 h-24 pointer-events-none">
+      <div className="flex items-center gap-4 pointer-events-auto cursor-pointer" onClick={() => handleNavClick(navItems[0])}>
+        <div className="w-10 h-10 border-2 border-blue-400 flex items-center justify-center font-anta text-xl text-white">D</div>
+        <span className="text-white font-anta tracking-widest text-lg hidden md:block uppercase">Museum</span>
+      </div>
+      
+      <div className="flex gap-10 pointer-events-auto">
+        {navItems.slice(1).map((item) => (
+          <button
+            key={item.id}
+            onClick={() => handleNavClick(item)}
+            className={`font-anta uppercase tracking-widest text-xs transition-all ${
+              currentRoom === item.id ? "text-blue-400" : "text-white/50 hover:text-white"
+            }`}
+            disabled={isTransitioning}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+    </nav>
   );
 }

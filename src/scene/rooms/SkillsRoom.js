@@ -3,6 +3,7 @@ import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
 import Exhibit from "../components/Exhibit";
 import SolidRoom from "../components/SolidRoom";
+import MuseumBench from "../components/MuseumBench";
 import { skills } from "@/data/content";
 
 export default function SkillsRoom({ position }) {
@@ -16,6 +17,9 @@ export default function SkillsRoom({ position }) {
         label={`RETURN TO ${previousRoom.toUpperCase()}`} 
         onClick={previousRoom} 
       />
+      <MuseumBench position={[-8, 0, 0]} rotation={[0, Math.PI / 2, 0]} />
+      <MuseumBench position={[8, 0, 0]} rotation={[0, -Math.PI / 2, 0]} />
+      
       {skills.map((s, i) => {
         const angle = (i / skills.length) * Math.PI * 2; 
         const radius = 6;

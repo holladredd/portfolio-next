@@ -8,11 +8,16 @@ const useStore = create((set) => ({
   transitionPhase: "IDLE", // IDLE | FACING | ENTERING | LANDING
   transitionTarget: new THREE.Vector3(0, 1, 0),
   
+  // Custom look target for click-to-focus
+  customLookTarget: null,
+  setCustomLook: (pos) => set({ customLookTarget: pos }),
+
   startTransition: (room, doorPos) => set((state) => ({ 
     previousRoom: state.currentRoom,
     nextRoom: room,
     transitionPhase: "FACING",
-    transitionTarget: new THREE.Vector3(...doorPos)
+    transitionTarget: new THREE.Vector3(...doorPos),
+    customLookTarget: null 
   })),
   
   setEntering: () => set({ transitionPhase: "ENTERING" }),
@@ -20,7 +25,8 @@ const useStore = create((set) => ({
   setLanding: () => set((state) => ({
     currentRoom: state.nextRoom,
     nextRoom: null,
-    transitionPhase: "LANDING"
+    transitionPhase: "LANDING",
+    customLookTarget: null
   })),
   
   finishTransition: () => set({ transitionPhase: "IDLE" }),

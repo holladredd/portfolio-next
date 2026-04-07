@@ -1,63 +1,72 @@
 import { Text } from "@react-three/drei";
+import useStore from "@/store/useStore";
 
-export default function SolidRoom({ position, title, size = [30, 12, 30] }) {
+export default function SolidRoom({ title, size = [20, 12, 20] }) {
+  const { setCustomLook, transitionPhase } = useStore();
   const [w, h, d] = size;
 
-  return (
-    <group position={position}>
-      {/* Museum Floor - Polished Slate */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]} receiveShadow>
-        <planeGeometry args={[w, d]} />
-        <meshStandardMaterial 
-          color="#0a0a0a" 
-          roughness={0.45} 
-          metalness={0.1} 
-        />
-      </mesh>
+  const handleRoomClick = (e) => {
+    // Only allow manual look-at when not in a transition
+    if (transitionPhase === "IDLE") {
+      e.stopPropagation();
+      setCustomLook([e.point.x, e.point.y, e.point.z]);
+    }
+  };
 
+  return (
+    <group onClick={handleRoomClick}>
+      {/* Floor - Matte Slate Mirror */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
+        <planeGeometry args={[w, d]} />
+        <meshStandardMaterial color="#050505" roughness={0.4} metalness={0.8} />
+      </mesh>
+      
       {/* Ceiling */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, h, 0]}>
         <planeGeometry args={[w, d]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.5} metalness={0.1} />
+        <meshStandardMaterial color="#050505" roughness={1} />
       </mesh>
 
-      {/* Walls - Solid Matte Slate */}
-      <mesh position={[0, h / 2, -d / 2]} receiveShadow>
-        <planeGeometry args={[w, h]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.9} metalness={0.05} />
+      {/* Back Wall */}
+      <mesh position={[0, h / 2, -d / 2]}>
+        <boxGeometry args={[w, h, 0.2]} />
+        <meshStandardMaterial color="#0a0a0a" roughness={0.8} />
       </mesh>
-      <mesh position={[0, h / 2, d / 2]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[w, h]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.9} metalness={0.05} />
+      
+      {/* Front Wall (Portals reside here) */}
+      <mesh position={[0, h / 2, d / 2]}>
+        <boxGeometry args={[w, h, 0.2]} />
+        <meshStandardMaterial color="#0a0a0a" roughness={0.8} />
       </mesh>
+      
+      {/* Left Wall */}
       <mesh position={[-w / 2, h / 2, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[d, h]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.9} metalness={0.05} />
+        <boxGeometry args={[d, h, 0.2]} />
+        <meshStandardMaterial color="#080808" roughness={0.8} />
       </mesh>
+      
+      {/* Right Wall */}
       <mesh position={[w / 2, h / 2, 0]} rotation={[0, -Math.PI / 2, 0]}>
-        <planeGeometry args={[d, h]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.9} metalness={0.05} />
+        <boxGeometry args={[d, h, 0.2]} />
+        <meshStandardMaterial color="#080808" roughness={0.8} />
       </mesh>
 
-      {/* Cove Lighting */}
-      <CoveLight position={[0, h - 0.15, -d / 2 + 0.15]} rotation={[Math.PI / 2, 0, 0]} length={w} />
-      <CoveLight position={[0, h - 0.15, d / 2 - 0.15]} rotation={[Math.PI / 2, 0, 0]} length={w} />
-
-      {/* Exhibit Title */}
-      <group position={[0, h - 2.5, -d / 2 + 0.1]}>
-        <Text fontSize={0.8} color="#ffffff" font="/fonts/Anta-Regular.ttf" letterSpacing={0.2} uppercase>
+      {/* Raised Room Title Inscription */}
+      <group position={[0, h - 0.8, -d / 2 + 0.2]}>
+        <Text fontSize={0.8} color="#ffffff" anchorX="center" anchorY="top" font="/fonts/Anta-Regular.ttf" letterSpacing={0.1} uppercase opacity={0.2} transparent>
           {title}
         </Text>
       </group>
-    </group>
-  );
-}
 
-function CoveLight({ position, rotation, length }) {
-  return (
-    <mesh position={position} rotation={rotation}>
-      <boxGeometry args={[length, 0.1, 0.1]} />
-      <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
-    </mesh>
+      {/* Architectural Accents: Cove Lighting Pillars */}
+      <mesh position={[-w / 2 + 0.1, h / 2, -d / 2 + 0.1]}>
+        <boxGeometry args={[0.2, h, 0.2]} />
+        <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.5} />
+      </mesh>
+      <mesh position={[w / 2 - 0.1, h / 2, -d / 2 + 0.1]}>
+        <boxGeometry args={[0.2, h, 0.2]} />
+        <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.5} />
+      </mesh>
+    </group>
   );
 }

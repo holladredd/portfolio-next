@@ -3,6 +3,7 @@ import useStore from "@/store/useStore";
 import EntranceDoor from "../components/EntranceDoor";
 import SolidRoom from "../components/SolidRoom";
 import Exhibit from "../components/Exhibit";
+import MuseumBench from "../components/MuseumBench";
 
 const connections = [
   { name: "FACEBOOK", link: "https://web.facebook.com/folayan.olamide.1" },
@@ -23,6 +24,7 @@ export default function ContactRoom({ position }) {
         label={`RETURN TO ${previousRoom.toUpperCase()}`} 
         onClick={previousRoom} 
       />
+      <MuseumBench position={[0, 0, 4]} rotation={[0, Math.PI, 0]} />
       <group position={[0, 2, 0]}>
         {connections.map((c, i) => (
            <Exhibit key={c.name} position={[(-4 + i * 2), 0, -5]} data={c} type="node" />
