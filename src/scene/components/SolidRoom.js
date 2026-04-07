@@ -6,11 +6,20 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
   const { setCustomLook, transitionPhase } = useStore();
   const [w, h, d] = size;
 
-  const texture = useTexture("/textures/light_abstract_pattern.png");
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-  texture.anisotropy = 16;
-  texture.anisotropy = 16;
-  // Tile scale: 1 patterns per 10 units
+  // Load the Multi-Surface architectural textures
+  const textures = useTexture({
+    wall: "/textures/light_abstract_pattern.png",
+    ceil: "/textures/ceiling_pattern.png",
+    floor: "/textures/floor_pattern.png",
+  });
+
+  // Calibrate all textures for perfect stability and symmetry
+  Object.values(textures).forEach((tex) => {
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.anisotropy = 16;
+  });
+
+  // Tile scale: 1 pattern per 10 units
   const repeatX = w / 10;
   const repeatY = h / 10;
   const repeatZ = d / 10;
@@ -24,32 +33,38 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
 
   return (
     <group onClick={handleRoomClick}>
-      {/* Floor - High Gloss Matte Slate */}
+      {/* Floor - Premium Terrazzo / Smooth Concrete */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
         <planeGeometry args={[w, d]} />
-        <meshStandardMaterial color="#050505" roughness={0.2} metalness={0.9} />
+        <meshStandardMaterial
+          map={textures.floor}
+          map-repeat={[repeatX, repeatZ]}
+          color="#ffffff"
+          roughness={0.8}
+          metalness={0.1}
+        />
       </mesh>
 
-      {/* Ceiling - Patterned */}
+      {/* Ceiling - Modern POP Blueprint */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, h, 0]}>
         <planeGeometry args={[w, d]} />
         <meshStandardMaterial
-          map={texture}
+          map={textures.ceil}
           map-repeat={[repeatX, repeatZ]}
           color="#ffffff"
           roughness={0.8}
         />
       </mesh>
 
-      {/* Back Wall */}
+      {/* Back Wall (Light Abstract Fluid) */}
       <mesh position={[0, h / 2, -d / 2]}>
         <boxGeometry args={[w, h, 0.2]} />
         <meshStandardMaterial
-          map={texture}
+          map={textures.wall}
           map-repeat={[repeatX, repeatY]}
           color="#ffffff"
           roughness={0.6}
-          metalness={0.4}
+          metalness={0.1}
         />
       </mesh>
 
@@ -57,11 +72,11 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
       <mesh position={[0, h / 2, d / 2]}>
         <boxGeometry args={[w, h, 0.2]} />
         <meshStandardMaterial
-          map={texture}
+          map={textures.wall}
           map-repeat={[repeatX, repeatY]}
           color="#ffffff"
           roughness={0.6}
-          metalness={0.4}
+          metalness={0.1}
         />
       </mesh>
 
@@ -69,11 +84,11 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
       <mesh position={[-w / 2, h / 2, 0]} rotation={[0, Math.PI / 2, 0]}>
         <boxGeometry args={[d, h, 0.2]} />
         <meshStandardMaterial
-          map={texture}
+          map={textures.wall}
           map-repeat={[repeatZ, repeatY]}
           color="#ffffff"
           roughness={0.6}
-          metalness={0.4}
+          metalness={0.1}
         />
       </mesh>
 
@@ -81,11 +96,11 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
       <mesh position={[w / 2, h / 2, 0]} rotation={[0, -Math.PI / 2, 0]}>
         <boxGeometry args={[d, h, 0.2]} />
         <meshStandardMaterial
-          map={texture}
+          map={textures.wall}
           map-repeat={[repeatZ, repeatY]}
           color="#ffffff"
           roughness={0.6}
-          metalness={0.4}
+          metalness={0.1}
         />
       </mesh>
 

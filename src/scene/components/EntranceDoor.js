@@ -30,22 +30,8 @@ export default function EntranceDoor({ position, rotation = [0, 0, 0], label, on
          <meshBasicMaterial transparent opacity={0} color="#38bdf8" />
       </mesh>
       
-      {/* Visual Door Frame */}
-      <mesh position={[0, 3, 0]}>
-         <boxGeometry args={[4.2, 6.2, 0.2]} />
-         <meshStandardMaterial 
-           color="#38bdf8" 
-           emissive="#38bdf8" 
-           emissiveIntensity={isTransitioning ? 2 : 0.5} 
-           wireframe 
-         />
-      </mesh>
-      
-      {/* Dark Portal Surface */}
-      <mesh position={[0, 3, 0.1]}>
-        <boxGeometry args={[4, 6, 0.1]} />
-        <meshStandardMaterial color="#1e293b" metalness={0.9} roughness={0.1} />
-      </mesh>
+      {/* The Visual Door Frame and Dark Portal Surface have been removed. */}
+      {/* This renders the portal completely transparent against the wall. */}
     </group>
   );
 }
