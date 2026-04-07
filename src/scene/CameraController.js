@@ -5,11 +5,11 @@ import useStore from "@/store/useStore";
 
 const roomCoordinates = {
   lobby: { pos: [0, 2, 12], lookAt: [0, 1, 0] },
-  projects: { pos: [-25, 2, 8], lookAt: [-25, 1, -5] },
-  graphics: { pos: [-25, 2, -32], lookAt: [-25, 1, -42] },
-  skills: { pos: [25, 2, 8], lookAt: [25, 1, -5] },
-  about: { pos: [0, 2, -14], lookAt: [0, 1, -26] },
-  contact: { pos: [0, 2, 14], lookAt: [0, 1, 30] }
+  projects: { pos: [-40, 2, 0], lookAt: [-40, 1, -10] },
+  graphics: { pos: [-40, 2, -45], lookAt: [-40, 1, -55] },
+  skills: { pos: [40, 2, 0], lookAt: [40, 1, -10] },
+  about: { pos: [0, 2, -40], lookAt: [0, 1, -50] },
+  contact: { pos: [0, 2, 40], lookAt: [0, 1, 50] }
 };
 
 export default function CameraController() {
@@ -21,13 +21,13 @@ export default function CameraController() {
   const currentLook = useRef(new THREE.Vector3(...roomCoordinates.lobby.lookAt));
 
   useEffect(() => {
-    if (roomCoordinates[currentRoom]) {
+    // Safety guard to ensure the room ID is valid before referencing coordinates
+    if (currentRoom && roomCoordinates[currentRoom]) {
       targetPos.current.set(...roomCoordinates[currentRoom].pos);
       targetLook.current.set(...roomCoordinates[currentRoom].lookAt);
     }
   }, [currentRoom]);
 
-  // Handle Custom Look Target
   useEffect(() => {
     if (customLookTarget) {
       targetLook.current.set(...customLookTarget);
@@ -36,31 +36,35 @@ export default function CameraController() {
 
   useFrame((state) => {
     const isTransitioning = transitionPhase !== "IDLE";
-    const speedMultiplier = 2; // Accelerated transitions
+    
+    // SUPER FAST Velocity Constants for sub-second journeys
+    const rotateSpeed = 0.5; 
+    const walkSpeed = 4.0;   
+    const arrivalSpeed = 0.5; 
 
-    if (transitionPhase === "FACING") {
+    if (transitionPhase === "FACING" && transitionTarget) {
       const lookAtDoor = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0));
-      currentLook.current.lerp(lookAtDoor, 0.2); // Faster face
+      currentLook.current.lerp(lookAtDoor, rotateSpeed); 
       camera.lookAt(currentLook.current);
       
       if (currentLook.current.distanceTo(lookAtDoor) < 0.1) setEntering();
     } 
-    else if (transitionPhase === "ENTERING") {
+    else if (transitionPhase === "ENTERING" && transitionTarget) {
       const walkDir = transitionTarget.clone().add(new THREE.Vector3(0, 1, 0)).sub(camera.position).normalize();
-      camera.position.add(walkDir.multiplyScalar(0.8)); // 2X Speed Walk
+      camera.position.add(walkDir.multiplyScalar(walkSpeed)); 
       
-      if (camera.position.distanceTo(transitionTarget) < 1.5) setLanding();
+      if (camera.position.distanceTo(transitionTarget) < 1.0) setLanding();
     }
     else if (transitionPhase === "LANDING") {
-      camera.position.lerp(targetPos.current, 0.2);
-      currentLook.current.lerp(targetLook.current, 0.2); // Faster land
+      camera.position.lerp(targetPos.current, arrivalSpeed);
+      currentLook.current.lerp(targetLook.current, arrivalSpeed);
       camera.lookAt(currentLook.current);
 
       if (camera.position.distanceTo(targetPos.current) < 0.2) finishTransition();
     }
     else {
       // Phase: IDLE - Natural breathing
-      const lerpSpeed = 0.08; 
+      const lerpSpeed = 0.1;
       camera.position.lerp(targetPos.current, lerpSpeed);
       currentLook.current.lerp(targetLook.current, lerpSpeed);
       camera.lookAt(currentLook.current);

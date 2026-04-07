@@ -7,9 +7,8 @@ import MuseumBench from "../components/MuseumBench";
 export default function Lobby({ position }) {
   return (
     <group position={position}>
-      <SolidRoom title="MUSEUM CORE: LOBBY" size={[32, 14, 32]} />
+      <SolidRoom title="MUSEUM CORE: LOBBY" size={[40, 14, 40]} />
       
-      {/* Central Reception Hub & Holographic Logo */}
       <group position={[0, 0, 0]}>
          <mesh position={[0, 0.6, 0]}>
             <boxGeometry args={[4, 1.2, 2]} />
@@ -32,10 +31,10 @@ export default function Lobby({ position }) {
          </Float>
       </group>
 
-      <MuseumBench position={[-8, 0, 10]} rotation={[0, Math.PI / 4, 0]} />
-      <MuseumBench position={[8, 0, 10]} rotation={[0, -Math.PI / 4, 0]} />
+      <MuseumBench position={[-12, 0, 12]} rotation={[0, Math.PI / 4, 0]} />
+      <MuseumBench position={[12, 0, 12]} rotation={[0, -Math.PI / 4, 0]} />
 
-      <group position={[0, 5, -15.5]}>
+      <group position={[0, 5, -19.5]}>
         <Text fontSize={1.8} color="#ffffff" anchorX="center" anchorY="middle" font="/fonts/Anta-Regular.ttf" uppercase opacity={0.8} transparent>
           FOLAYAN OLAMIDE
         </Text>
@@ -44,10 +43,10 @@ export default function Lobby({ position }) {
         </Text>
       </group>
 
-      <EntranceDoor position={[-15.8, 0, -5]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
-      <EntranceDoor position={[15.8, 0, -5]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
-      <EntranceDoor position={[0, 0, -15.8]} label="ABOUT" onClick="about" />
-      <EntranceDoor position={[0, 0, 15.8]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
+      <EntranceDoor position={[-19.8, 0, 0]} rotation={[0, Math.PI / 2, 0]} label="PROJECTS" onClick="projects" />
+      <EntranceDoor position={[19.8, 0, 0]} rotation={[0, -Math.PI / 2, 0]} label="SKILLS" onClick="skills" />
+      <EntranceDoor position={[0, 0, -19.8]} label="ABOUT" onClick="about" />
+      <EntranceDoor position={[0, 0, 19.8]} rotation={[0, Math.PI, 0]} label="CONTACT" onClick="contact" />
     </group>
   );
 }

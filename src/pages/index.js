@@ -1,6 +1,9 @@
 import Head from "next/head";
-import TechLabScene from "@/scene/TechLabScene";
+import dynamic from "next/dynamic";
 import HUD from "@/components/HUD";
+
+// Strictly client-side instantiation to prevent SSR/Prerendering crashes
+const TechLabScene = dynamic(() => import("@/scene/TechLabScene"), { ssr: false });
 
 export default function Home() {
   return (

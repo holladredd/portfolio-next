@@ -13,7 +13,7 @@ export default function ProjectsRoom({ position }) {
   return (
     <group position={position}>
       <SolidRoom title="DATA LAB: PROJECTS" size={[20, 12, 40]} />
-      <EntranceDoor position={[0, 0, 19.8]} rotation={[0, Math.PI, 0]} label={returnLabel} onClick={previousRoom || "lobby"} />
+      <EntranceDoor position={[0, 0, 19.8]} rotation={[0, Math.PI, 0]} label={returnLabel} onClick="lobby" />
       
       <MuseumBench position={[-4, 0, 0]} rotation={[0, Math.PI / 2, 0]} />
       <MuseumBench position={[4, 0, 0]} rotation={[0, -Math.PI / 2, 0]} />

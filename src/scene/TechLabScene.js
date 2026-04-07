@@ -18,19 +18,19 @@ export default function TechLabScene() {
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: false }}
-        camera={{ position: [0, 2, 10], fov: 60 }}
+        camera={{ position: [0, 2, 12], fov: 60 }}
       >
         <color attach="background" args={["#050505"]} />
-        <fog attach="fog" args={["#050505", 5, 40]} />
+        <fog attach="fog" args={["#050505", 5, 80]} />
 
         <Suspense fallback={null}>
           <Environment preset="city" />
           <ambientLight intensity={0.15} />
-          
+
           <AmbientDust />
 
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]}>
-            <planeGeometry args={[100, 100]} />
+            <planeGeometry args={[200, 200]} />
             <MeshReflectorMaterial
               blur={[300, 100]}
               resolution={1024}
@@ -48,16 +48,22 @@ export default function TechLabScene() {
           <CameraController />
 
           <group>
+            {/* Reverting to Original Expanded Positions */}
             <Lobby position={[0, 0, 0]} />
-            <ProjectsRoom position={[-25, 0, -5]} />
-            <SkillsRoom position={[25, 0, -5]} />
-            <AboutRoom position={[0, 0, -26]} />
-            <ContactRoom position={[0, 0, 26]} />
-            <GraphicsRoom position={[-25, 0, -42]} />
+            <ProjectsRoom position={[-40, 0, 0]} />
+            <SkillsRoom position={[40, 0, 0]} />
+            <AboutRoom position={[0, 0, -40]} />
+            <ContactRoom position={[0, 0, 40]} />
+            <GraphicsRoom position={[-40, 0, -45]} />
           </group>
 
           <EffectComposer disableNormalPass>
-            <Bloom luminanceThreshold={0.9} mipmapBlur intensity={0.5} radius={0.3} />
+            <Bloom
+              luminanceThreshold={0.9}
+              mipmapBlur
+              intensity={0.5}
+              radius={0.3}
+            />
             <Noise opacity={0.015} />
           </EffectComposer>
         </Suspense>
