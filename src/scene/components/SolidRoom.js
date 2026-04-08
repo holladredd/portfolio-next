@@ -8,14 +8,15 @@
 import { Text, useTexture } from "@react-three/drei";
 import useStore from "@/store/useStore";
 import * as THREE from "three";
+import React from "react";
 
 export default function SolidRoom({ title, size = [20, 12, 20] }) {
   const { setCustomLook, transitionPhase } = useStore();
   const [w, h, d] = size;
 
-  // Load the Multi-Surface architectural textures
+  // Load the Custom Walls, Ceiling, and Floor textures
   const textures = useTexture({
-    wall: "/textures/light_abstract_pattern.png",
+    wall: "/textures/pale-yellow-mosaic-tiles-textured-background.jpg",
     ceil: "/textures/ceiling_pattern.png",
     floor: "/textures/floor_pattern.png",
   });
@@ -26,9 +27,9 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
     tex.anisotropy = 16;
   });
 
-  // Tile scale: 1 pattern per 10 units
+  // Tile scale: Standard horizontal mapping, but vertical is locked to 1 (No Layers)
   const repeatX = w / 10;
-  const repeatY = h / 10;
+  const repeatY = 1;
   const repeatZ = d / 10;
 
   const handleRoomClick = (e) => {
@@ -78,7 +79,7 @@ export default function SolidRoom({ title, size = [20, 12, 20] }) {
         acts as the mount point for EntranceDoor portals. Textured with the 
         light abstract pattern to form a minimalist gallery setting.
       */}
-      {/* Back Wall (Light Abstract Fluid) */}
+      {/* Back Wall */}
       <mesh position={[0, h / 2, -d / 2]}>
         <boxGeometry args={[w, h, 0.2]} />
         <meshStandardMaterial

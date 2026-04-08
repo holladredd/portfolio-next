@@ -1,6 +1,6 @@
 /**
  * EntranceDoor Component
- * 
+ *
  * Represents an interactive archway portal within the museum.
  * It uses an invisible hitbox to handle high-speed 'onPointerDown' events,
  * triggering the kinetic camera transition to a new museum wing (URL route).
@@ -8,22 +8,27 @@
 import useStore from "@/store/useStore";
 import * as THREE from "three";
 
-export default function EntranceDoor({ position, rotation = [0, 0, 0], label, onClick }) {
+export default function EntranceDoor({
+  position,
+  rotation = [0, 0, 0],
+  label,
+  onClick,
+}) {
   const { transitionPhase, startTransition } = useStore();
   const isTransitioning = transitionPhase !== "IDLE";
 
   return (
     <group position={position} rotation={rotation}>
       {/* SOLID HITBOX: Large, invisible volume for reliable interaction */}
-      <mesh 
-        position={[0, 3, 0]} 
-        onPointerDown={(e) => { 
-          e.stopPropagation(); 
+      <mesh
+        position={[0, 3, 0]}
+        onPointerDown={(e) => {
+          e.stopPropagation();
           if (!isTransitioning) {
             const worldPos = new THREE.Vector3();
             e.object.getWorldPosition(worldPos);
             // Initiate the Kinetic sequence
-            startTransition(onClick, worldPos.toArray()); 
+            startTransition(onClick, worldPos.toArray());
           }
         }}
         onPointerOver={() => {
@@ -33,16 +38,16 @@ export default function EntranceDoor({ position, rotation = [0, 0, 0], label, on
           document.body.style.cursor = "default";
         }}
       >
-         <boxGeometry args={[5, 7, 0.5]} />
-         <meshBasicMaterial transparent opacity={0} color="#38bdf8" />
+        <boxGeometry args={[5, 7, 0.5]} />
+        <meshBasicMaterial transparent opacity={0} color="#38bdf8" />
       </mesh>
-      
+
       {/* Architectural Entrance Frame (Trim) */}
       <mesh position={[0, 3, 0.05]}>
-         <boxGeometry args={[4.4, 6.4, 0.1]} />
-         <meshStandardMaterial color="#000000" metalness={0} roughness={1} />
+        <boxGeometry args={[4.4, 6.4, 0.1]} />
+        <meshStandardMaterial color="#000000" metalness={0} roughness={1} />
       </mesh>
-      
+
       {/* The Hallway Void (Simulating depth leading to next room) */}
       <mesh position={[0, 3, 0.1]}>
         <boxGeometry args={[4, 6, 0.15]} />

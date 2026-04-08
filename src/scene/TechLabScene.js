@@ -79,11 +79,11 @@ export default function TechLabScene() {
           <group>
             {/* Museum HUB (Lobby) */}
             <Lobby position={[0, 0, 0]} />
-            <ProjectsRoom position={[-30, 0, 0]} />
-            <SkillsRoom position={[35, 0, 0]} />
-            <AboutRoom position={[0, 0, -35]} />
-            <ContactRoom position={[0, 0, 35]} />
-            <GraphicsRoom position={[-30, 0, -35]} />
+            <ProjectsRoom position={[-60, 0, 0]} />
+            <SkillsRoom position={[60, 0, 0]} />
+            <AboutRoom position={[0, 0, -60]} />
+            <ContactRoom position={[0, 0, 60]} />
+            <GraphicsRoom position={[-60, 0, -60]} />
           </group>
         </Suspense>
       </Canvas>
